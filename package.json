@@ -1,0 +1,14 @@
+{
+  "name": "ThunderSushi",
+  "version": "0.0.0",
+  "description": "",
+  "main": "ABTestHelper.js",
+  "scripts": {
+    "test": "node test/run.js"
+  },
+  "author": "",
+  "license": "BSD-2-Clause",
+  "devDependencies": {
+  	"nodeunit": "latest"
+  }
+}
