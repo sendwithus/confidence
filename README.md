@@ -1,10 +1,10 @@
-sixpack
+confidence
 =======
 
 ## Getting started
 
 ```
-npm install sixpack
+npm install confidence
 ```
 
 ## Usage
@@ -12,10 +12,10 @@ npm install sixpack
 ### Initialization
 
 ``` js
-var mySixpack = new Sixpack();
+var myConfidence = new Confidence();
 ```
 
-Versions in sixpack look like this:
+Versions in confidence look like this:
 
 ``` js
 variant = {
@@ -52,8 +52,8 @@ variantB = {
 }
 
 // then add them to your A/B test
-mySixpack.addVariant(variantA);
-mySixpack.addVariant(variantB);
+myConfidence.addVariant(variantA);
+myConfidence.addVariant(variantB);
 
 ```
 
@@ -100,13 +100,13 @@ variantE = {
 
 
 // add them to your A/B test
-mySixpack.addVariant(variantC);
-mySixpack.addVariant(variantD);
-mySixpack.addVariant(variantE);
+myConfidence.addVariant(variantC);
+myConfidence.addVariant(variantD);
+myConfidence.addVariant(variantE);
 
 
 // evaluate them to get the result
-result = mySixpack.getResult();
+result = myConfidence.getResult();
 
 /*
 { status: 1,
@@ -136,11 +136,11 @@ variantG = {
 };
 
 // add them to your A/B test
-mySixpack.addVariant(variantF);
-mySixpack.addVariant(variantG);
+myConfidence.addVariant(variantF);
+myConfidence.addVariant(variantG);
 
 // evaluate them to get the result
-result = mySixpack.getResult();
+result = myConfidence.getResult();
 
 /*
 { status: 2,
@@ -169,11 +169,11 @@ variantI = {
 	eventCount: 3000
 };
 
-mySixpack.addVariant(variantH);
-mySixpack.addVariant(variantI);
+myConfidence.addVariant(variantH);
+myConfidence.addVariant(variantI);
 
 
-result = mySixpack.getResult();
+result = myConfidence.getResult();
 
 /*
 { status: 3,
@@ -186,7 +186,7 @@ result = mySixpack.getResult();
 
 ## Issues and Questions
 
-Found a bug? Create an [issue](https://github.com/sendwithus/sixpack/issues) here on GitHub!
+Found a bug? Create an [issue](https://github.com/sendwithus/confidence/issues) here on GitHub!
 
 For general questions, tweet me [@jessicaraygun](https://twitter.com/jessicaraygun)
 
@@ -199,7 +199,7 @@ For general questions, tweet me [@jessicaraygun](https://twitter.com/jessicarayg
 // TODO Confirm later
 
 ```
-cd node_modules/sixpack/
+cd node_modules/confidence/
 npm install
 npm test
 ```
