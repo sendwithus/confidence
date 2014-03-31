@@ -220,7 +220,6 @@ npm test
 
 Found a bug? Create an [issue](https://github.com/sendwithus/confidence/issues) here on GitHub!
 
-For general questions, tweet me [@jessicaraygun](https://twitter.com/jessicaraygun) or 
-
+For general questions, tweet me [@jessicaraygun](https://twitter.com/jessicaraygun).
 ## Author
 Developed and maintained by [Jessica Thomas](mailto:jessica@sendwithus.com), Data Scientist @ [sendwithus.com](https://www.sendwithus.com)
