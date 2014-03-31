@@ -7,7 +7,7 @@
 // brush up on the math and whys.
 // add a zscore to the result object (and margin or error)
 
-var Confidence = require('./Confidence.js');
+var Confidence = require('./confidence.js');
 var myConfidence = new Confidence();
 
 // addVersion

@@ -1,7 +1,7 @@
 ## Description
 Confidence.js is designed to help you make sense of your A/B test results.
 
-## Getting started
+## Getting started!!!!
 
 Include `confidence.js` on your page.
 ``` HTML
@@ -63,7 +63,7 @@ Evaluates the variants in your A/B test and determines which is the winning vari
 
 Returns an object containing:
 
- - `hasWinner`: true if a winner could be calculated, false otherwise 
+ - `hasWinner`: true if a winner could be calculated, false otherwise
  - `hasEnoughData`: true if there is enough data to calculate a statistically significant result, false otherwise
  - `winnerID`: the ID of the winning variation, or `null` if there isn't one
  - `winnerName`: the name of the winning variation or `null` if there isn't one
@@ -114,7 +114,7 @@ result = myConfidence.getResult();
 	winnerID: null,
 	winnerName: null,
 	confidenceInterval: null,
-	readable: 'There is not enough data to determine 
+	readable: 'There is not enough data to determine
 		a conclusive result.'
 }
 */
@@ -152,7 +152,7 @@ result = myConfidence.getResult();
 	winnerID: null,
 	winnerName: null,
 	confidenceInterval: null,
-	readable: 'We have enough data to say we cannot 
+	readable: 'We have enough data to say we cannot
 		predict a winner with 95% certainty.'
 }
 */
@@ -190,10 +190,10 @@ result = myConfidence.getResult();
 	winnerID: 'H',
 	winnerName: 'Hungry Hippopotami',
 	confidenceInterval: { min: 82, max: 84.67 },
-	readable: 'In a hypothetical experiment that 
-		is repeated infinite times, the average 
-		rate of the "Hungry Hippopotami" variant 
-		will fall between 82% and 84.67%, 95% 
+	readable: 'In a hypothetical experiment that
+		is repeated infinite times, the average
+		rate of the "Hungry Hippopotami" variant
+		will fall between 82% and 84.67%, 95%
 		of the time'
 }
 */
