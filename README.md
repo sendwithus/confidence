@@ -4,7 +4,7 @@ confidence
 Confidence.js was designed to help you make sense of your A/B test results.
 
 ## Getting started
-// TODO - deprioritize node
+
 
 ## Usage
 
@@ -14,7 +14,7 @@ Confidence.js was designed to help you make sense of your A/B test results.
 var myConfidence = new Confidence();
 ```
 
-Versions in confidence look like this:
+Confidence helps you compare the variants in your A/B test. Variants in Confidence.js look like this:
 
 ``` js
 variant = {
