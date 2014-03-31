@@ -1,10 +1,12 @@
-confidence
-=======
 ## Description
-Confidence.js was designed to help you make sense of your A/B test results.
+Confidence.js is designed to help you make sense of your A/B test results.
 
 ## Getting started
 
+Include `confidence.js` on your page.
+``` HTML
+<script src="path/to/confidence.js"></script>
+```
 
 ## Usage
 
@@ -25,14 +27,13 @@ variant = {
 }
 ```
 
-### addVariant(id, variant)
+### addVariant(variant)
 
 Adds a variant to your A/B test. You can add and compare as many variants as you'd like.
 
 ***Parameters:***
 
- - id: a short identifier
- - variant: the data you want to add
+ - `variant`: the data you want to add
 
 ``` js
 // first, create some variants
@@ -45,12 +46,12 @@ variantA = {
 
 variantB = {
 	id: 'B',
-	name: 'Beligerent Bumblebees',
+	name: 'Belligerent Bumblebees',
 	conversionCount: 2500,
 	eventCount: 3000
 }
 
-// then add them to your A/B test
+// then add the variants to your A/B test
 myConfidence.addVariant(variantA);
 myConfidence.addVariant(variantB);
 
@@ -62,13 +63,12 @@ Evaluates the variants in your A/B test and determines which is the winning vari
 
 Returns an object containing:
 
- - status: a short status identifier indicating the outcome (1, 2, or 3)
-   - 1: There is not enough data to determine a result.
-   - 2: There is enough data, but the results are too close and there is no clear winner.
-   - 3: There is enough data, and there is a clear winner.
- - winner: the name of the winner or `null` if there isn't one (for status 1 and 2)
- - confidenceInterval: the minimum and maximum values of the confidence interval, or `null` if there is no winner (for status 1 and 2)
- - readable: your human readable result
+ - `hasWinner`: true if a winner could be calculated, false otherwise 
+ - `hasEnoughData`: true if there is enough data to calculate a statistically significant result, false otherwise
+ - `winnerID`: the ID of the winning variation, or `null` if there isn't one
+ - `winnerName`: the name of the winning variation or `null` if there isn't one
+ - `confidenceInterval`: the minimum and maximum values of the confidence interval, or `null` if there is no winner
+ - `readable`: your human readable result
 
 ## Examples
 
@@ -98,13 +98,13 @@ variantE = {
 };
 
 
-// add them to your A/B test
+// add the variants to your A/B test
 myConfidence.addVariant(variantC);
 myConfidence.addVariant(variantD);
 myConfidence.addVariant(variantE);
 
 
-// evaluate them to get the result
+// evaluate the variants to get the result
 result = myConfidence.getResult();
 
 /*
@@ -114,7 +114,8 @@ result = myConfidence.getResult();
 	winnerID: null,
 	winnerName: null,
 	confidenceInterval: null,
-	readable: 'There is not enough data to determine a conclusive result.'
+	readable: 'There is not enough data to determine 
+		a conclusive result.'
 }
 */
 ```
@@ -137,11 +138,11 @@ variantG = {
 	eventCount: 3000
 };
 
-// add them to your A/B test
+// add the variants to your A/B test
 myConfidence.addVariant(variantF);
 myConfidence.addVariant(variantG);
 
-// evaluate them to get the result
+// evaluate the variants to get the result
 result = myConfidence.getResult();
 
 /*
@@ -151,7 +152,8 @@ result = myConfidence.getResult();
 	winnerID: null,
 	winnerName: null,
 	confidenceInterval: null,
-	readable: 'We have enough data to say we cannot predict a winner with 95% certainty.'
+	readable: 'We have enough data to say we cannot 
+		predict a winner with 95% certainty.'
 }
 */
 ```
@@ -174,9 +176,11 @@ variantI = {
 	eventCount: 3000
 };
 
+// add the variants to your A/B test
 myConfidence.addVariant(variantH);
 myConfidence.addVariant(variantI);
 
+// evaluate the variants to get the result
 result = myConfidence.getResult();
 
 /*
@@ -186,7 +190,11 @@ result = myConfidence.getResult();
 	winnerID: 'H',
 	winnerName: 'Hungry Hippopotami',
 	confidenceInterval: { min: 82, max: 84.67 },
-	readable: 'In a hypothetical experiment that is repeated infinite times, the average rate of the "Hungry Hippopotami" variant will fall between 82% and 84.67%, 95% of the time'
+	readable: 'In a hypothetical experiment that 
+		is repeated infinite times, the average 
+		rate of the "Hungry Hippopotami" variant 
+		will fall between 82% and 84.67%, 95% 
+		of the time'
 }
 */
 ```
@@ -197,18 +205,9 @@ Found a bug? Create an [issue](https://github.com/sendwithus/confidence/issues) 
 
 For general questions, tweet me [@jessicaraygun](https://twitter.com/jessicaraygun).
 
-## Using with Node.js
-```
-npm install confidence
-```
-###Testing...
-
-###Example...
-
-// TODO Confirm later
+## Run Tests
 
 ```
-cd node_modules/confidence/
 npm install
 npm test
 ```
