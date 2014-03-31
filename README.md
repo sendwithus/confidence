@@ -1,5 +1,5 @@
-## Description
-Confidence.js is designed to help you make sense of your A/B test results.
+## Confidence
+Confidence.js is a light-weight javascript library to help you make sense of your A/B test results.
 
 ## Getting started
 
