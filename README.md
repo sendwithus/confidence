@@ -3,6 +3,8 @@ Confidence.js is a light-weight javascript library to help you make sense of you
 
 ## Getting started
 
+[Download confidence.js](https://raw.githubusercontent.com/sendwithus/confidence/master/confidence.js)
+
 Include `confidence.js` on your page.
 ``` HTML
 <script src="path/to/confidence.js"></script>
