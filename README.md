@@ -33,7 +33,7 @@ Adds a variant to your A/B test. You can add and compare as many variants as you
 
 ***Parameters:***
 
- - `variant`: the data you want to add
+ - `variant`: the variant object you'd like to add to this A/B test
 
 ``` js
 // first, create some variants
