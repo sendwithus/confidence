@@ -20,10 +20,10 @@ Confidence helps you compare the variants in your A/B test. Variants in Confiden
 
 ``` js
 variant = {
-	id: 'A',		// short identifier
-	name: 'Variant A',	// descriptive identifier
-	conversionCount: 50,	// number of events that successfully converted
-	eventCount: 300 	// total number of events tracked
+	id: 'A',                // short identifier
+	name: 'Variant A',      // descriptive identifier
+	conversionCount: 50,    // number of events that successfully converted
+	eventCount: 300         // total number of events tracked
 }
 ```
 
