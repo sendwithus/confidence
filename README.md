@@ -19,6 +19,7 @@ Versions in sixpack look like this:
 
 ``` js
 variant = {
+	id: 'A',	// short identifier
 	name: 'Variant A',	// descriptive identifier
 	conversionCount: 50,		// number of events that successfully converted *** CONVERSIONCOUNT
 	eventCount: 300 	// total number of events tracked ***EVENTCOUNT
@@ -37,20 +38,22 @@ Adds a variant to your A/B test. You can add and compare as many variants as you
 ``` js
 // first, create some variants
 variantA = {
+	id: 'A',
 	name: 'Alluring Alligators',
 	conversionCount: 1500,
 	eventCount: 3000
 }
 
 variantB = {
+	id: 'B',
 	name: 'Beligerent Bumblebees',
 	conversionCount: 2500,
 	eventCount: 3000
 }
 
 // then add them to your A/B test
-mySixpack.addVariant('A', variantA);
-mySixpack.addVariant('B', variantB);
+mySixpack.addVariant(variantA);
+mySixpack.addVariant(variantB);
 
 ```
 
@@ -75,18 +78,21 @@ Returns an object containing:
 ``` js
 // create some variants
 variantC = {
+	id: 'C',
 	name: 'Cranky Capybaras',
 	conversionCount: 5,
 	eventCount: 50
 };
 
 variantD = {
+	id: 'D',
 	name: 'Diligent Ducklings',
 	conversionCount: 60,
 	eventCount: 200
 };
 
 variantE = {
+	id: 'E',
 	name: 'Effervescent Elephants',
 	conversionCount: 30,
 	eventCount: 40
@@ -94,9 +100,9 @@ variantE = {
 
 
 // add them to your A/B test
-mySixpack.addVariant('C', variantC);
-mySixpack.addVariant('D', variantD);
-mySixpack.addVariant('E', variantE);
+mySixpack.addVariant(variantC);
+mySixpack.addVariant(variantD);
+mySixpack.addVariant(variantE);
 
 
 // evaluate them to get the result
@@ -116,20 +122,22 @@ result = mySixpack.getResult();
 ``` js
 // create some variants
 variantF = {
+	id: 'F',
 	name: 'Freaky Flamingos',
 	conversionCount: 1501,
 	eventCount: 3000
 };
 
 variantG = {
+	id: 'G',
 	name: 'Gregarious Gorillas',
 	conversionCount: 1500,
 	eventCount: 3000
 };
 
 // add them to your A/B test
-mySixpack.addVariant('F', variantF);
-mySixpack.addVariant('G', variantG);
+mySixpack.addVariant(variantF);
+mySixpack.addVariant(variantG);
 
 // evaluate them to get the result
 result = mySixpack.getResult();
@@ -148,19 +156,21 @@ result = mySixpack.getResult();
 ``` js
 // create some variants
 variantH = {
+	id: 'H',
 	name: 'Hungry Hippopotami',
 	conversionCount: 2500,
 	eventCount: 3000
 };
 
 variantI = {
+	id: 'I',
 	name: 'Irritable Iguanas',
 	conversionCount: 1500,
 	eventCount: 3000
 };
 
-mySixpack.addVariant('H', variantH);
-mySixpack.addVariant('I', variantI);
+mySixpack.addVariant(variantH);
+mySixpack.addVariant(variantI);
 
 
 result = mySixpack.getResult();
