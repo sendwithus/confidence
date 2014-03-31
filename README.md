@@ -1,11 +1,10 @@
 confidence
 =======
+## Description
+Confidence.js was designed to help you make sense of your A/B test results.
 
 ## Getting started
-
-```
-npm install confidence
-```
+// TODO - deprioritize node
 
 ## Usage
 
@@ -19,10 +18,10 @@ Versions in confidence look like this:
 
 ``` js
 variant = {
-	id: 'A',	// short identifier
+	id: 'A',		// short identifier
 	name: 'Variant A',	// descriptive identifier
-	conversionCount: 50,		// number of events that successfully converted *** CONVERSIONCOUNT
-	eventCount: 300 	// total number of events tracked ***EVENTCOUNT
+	conversionCount: 50,	// number of events that successfully converted
+	eventCount: 300 	// total number of events tracked
 }
 ```
 
@@ -199,7 +198,9 @@ Found a bug? Create an [issue](https://github.com/sendwithus/confidence/issues) 
 For general questions, tweet me [@jessicaraygun](https://twitter.com/jessicaraygun).
 
 ## Using with Node.js
-
+```
+npm install confidence
+```
 ###Testing...
 
 ###Example...
@@ -211,11 +212,3 @@ cd node_modules/confidence/
 npm install
 npm test
 ```
-## License
-
-// TODO license from sendwithus - where is this? - as a file
-https://github.com/sendwithus/templates/blob/master/LICENSE
-
-// notice and licence from sendwithus python:
-
-https://github.com/sendwithus/sendwithus_python/blob/master/LICENSE
