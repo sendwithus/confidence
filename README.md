@@ -11,14 +11,14 @@ npm install sixpack
 
 ### Initialization
 
-```
+``` js
 var Sixpack = require('sixpack');
 var mySixpack = new Sixpack();
 ```
 
 Versions in sixpack look like this:
 
-```
+``` js
 version = {
 	name: 'The name',	// descriptive identifier
 	eventCount: 50,		// number of people who completed the desired action
@@ -35,7 +35,7 @@ Adds a version to your A/B test. You can add and compare as many versions as you
  - id: a short identifier
  - version: the data you want to add
 
-```
+``` js
 // first, create some versions
 versionA = {
 	name: 'Alluring Alligators',
@@ -116,7 +116,7 @@ result = mySixpack.getResult();
 
 ***Case 2: There is enough data, but there is no clear winner.***
 
-```
+``` js
 // create some versions
 versionF = {
 	name: 'Freaky Flamingos',
@@ -149,7 +149,7 @@ result = mySixpack.getResult();
 
 ***Case 3: There is enough data and there is a clear winner.***
 
-```
+``` js
 // create some versions
 versionH = {
 	name: 'Hungry Hippopotami',
