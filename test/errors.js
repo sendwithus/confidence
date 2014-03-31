@@ -2,6 +2,8 @@ var Sixpack = require('../Sixpack.js');
 
 //**************************************************************************//
 
+// TODO:  Change error messages to say what the test /should/ do instead of what it does.
+
 module.exports['Add Version'] = {
 
   // Verifies that the total count cannot be zero.
@@ -247,6 +249,7 @@ module.exports['Get Result'] = {
     var result = sixpack.getResult();
 
     test.equal(result.status, Sixpack.STATUS_ENOUGH_DATA_AND_RESULT, 'Enough data, and we have a winner');
+    test.equal(result.statusMessage, Sixpack.STATUS_MESSAGE_ENOUGH_DATA_AND_RESULT, 'Enough data, and we have a winner');
     test.equal(result.winner, 'Original', 'Original is the winner');
     test.deepEqual(result.confidenceInterval, {
       min: 23.88,
@@ -283,6 +286,7 @@ module.exports['Analyze Confidence Intervals'] = {
 
     var expectedResult = {
       status: Sixpack.STATUS_ENOUGH_DATA_AND_NO_RESULT,
+      statusMessage: Sixpack.STATUS_MESSAGE_ENOUGH_DATA_AND_NO_RESULT,
       winner: null,
       confidenceInterval: null,
       readable: messageNoWinner
@@ -312,6 +316,7 @@ module.exports['Analyze Confidence Intervals'] = {
 
     var expectedResult = {
       status: Sixpack.STATUS_ENOUGH_DATA_AND_RESULT,
+      statusMessage: Sixpack.STATUS_MESSAGE_ENOUGH_DATA_AND_RESULT,
       winner: 'Version B',
       confidenceInterval: { min: 82, max: 84.67 },
       readable: messageWinner
@@ -442,8 +447,27 @@ module.exports['Get Rate'] = {
     var that = this;
 
     test.throws(function() {
-      that.sixpack.getRate('B');
+      that.sixpack.getRate('A');
     }, Error, 'Total is zero: cannot divide by zero to produce rate.');
+
+    test.done();
+  },
+  // Verifies that the total count cannot be zero.
+  'Divide by negative': function(test) {
+
+    sixpack = new Sixpack();
+    sixpack.addVersion('B', {
+      name: 'Version B',
+      eventCount: 1356,
+      totalCount: -1
+    });
+
+    test.ok(sixpack);
+    var that = this;
+
+    test.throws(function() {
+      that.sixpack.getRate('B');
+    }, Error, 'Total is negative: cannot use a negative number to produce rate.');
 
     test.done();
   },

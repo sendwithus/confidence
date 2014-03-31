@@ -8,26 +8,27 @@
 // add a zscore to the result object (and margin or error)
 
 var Sixpack = require('./Sixpack.js');
-var test = new Sixpack({ zScore: 1.96 });
+var mySixpack = new Sixpack();
 
 // addVersion
 // Input: { 'id': { name: 'X', eventCount: Y, totalCount: Z}}.
 // Output: success or error message?
-test.addVersion('A', { name: 'Original', eventCount: 1500, totalCount: 3000 });
-test.addVersion('B', { name: 'New', eventCount: 2500, totalCount: 3000 });
 
+// TODO partial and total
+// event_type? might be more broad.
+// more general specific term
 
-var confidenceIntervals = {};
+// TODO standard data format
+// standard data format for a/b testing? what might people want to use with a file.
 
-confidenceIntervals['A'] = { min: 0.4821077297881646, max: 0.5178922702118354 };
+// TODO identify audience - to know what they need and who to post to (g+? twitter?)
 
-confidenceIntervals['B'] = { min: 0.8199972225115139, max: 0.8466694441551529 };
+mySixpack.addVersion('G', { name: 'Gregarious Gorillas', eventCount: 1500, totalCount: 3000 });
+mySixpack.addVersion('H', { name: 'Hungry Hippopotami', eventCount: 2500, totalCount: 3000 });
 
-var result = test.getResult();
+result = mySixpack.getResult();
 
 console.log(result);
-
-
 // console.log('thing!!!!:', testResult);
 
 
