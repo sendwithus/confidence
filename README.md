@@ -1,7 +1,7 @@
 ## Description
 Confidence.js is designed to help you make sense of your A/B test results.
 
-## Getting started!!!!
+## Getting started
 
 Include `confidence.js` on your page.
 ``` HTML
