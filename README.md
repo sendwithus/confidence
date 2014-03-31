@@ -109,10 +109,13 @@ myConfidence.addVariant(variantE);
 result = myConfidence.getResult();
 
 /*
-{ status: 1,
-  winner: null,
-  confidenceInterval: null,
-  readable: 'There is not enough data to determine a conclusive result.'
+{
+	hasWinner: false,
+	hasEnoughData: false,
+	winnerID: null,
+	winnerName: null,
+	confidenceInterval: null,
+	readable: 'There is not enough data to determine a conclusive result.'
 }
 */
 ```
@@ -143,10 +146,13 @@ myConfidence.addVariant(variantG);
 result = myConfidence.getResult();
 
 /*
-{ status: 2,
-  winner: null,
-  confidenceInterval: null,
-  readable: 'We have enough data to say we cannot predict a winner with 95% certainty.'
+{
+	hasWinner: false,
+	hasEnoughData: true,
+	winnerID: null,
+	winnerName: null,
+	confidenceInterval: null,
+	readable: 'We have enough data to say we cannot predict a winner with 95% certainty.'
 }
 */
 ```
@@ -172,17 +178,19 @@ variantI = {
 myConfidence.addVariant(variantH);
 myConfidence.addVariant(variantI);
 
-
 result = myConfidence.getResult();
 
 /*
-{ status: 3,
-  winner: 'Hungry Hippopotomi',
-  confidenceInterval: { min: 82, max: 84.67 },
-  readable: 'In a hypothetical experiment that is repeated infinite times, the average rate of the "Hungry Hippopotomi" variant will fall between 82% and 84.67%, 95% of the time' }
+{
+	hasWinner: true,
+	hasEnoughData: true,
+	winnerID: 'H',
+	winnerName: 'Hungry Hippopotami',
+	confidenceInterval: { min: 82, max: 84.67 },
+	readable: 'In a hypothetical experiment that is repeated infinite times, the average rate of the "Hungry Hippopotami" variant will fall between 82% and 84.67%, 95% of the time'
+}
 */
 ```
-
 
 ## Issues and Questions
 

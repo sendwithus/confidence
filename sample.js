@@ -7,8 +7,8 @@
 // brush up on the math and whys.
 // add a zscore to the result object (and margin or error)
 
-var Sixpack = require('./Sixpack.js');
-var mySixpack = new Sixpack();
+var Confidence = require('./Confidence.js');
+var myConfidence = new Confidence();
 
 // addVersion
 // Input: { 'id': { name: 'X', eventCount: Y, totalCount: Z}}.
@@ -22,28 +22,26 @@ var mySixpack = new Sixpack();
 // standard data format for a/b testing? what might people want to use with a file.
 
 // TODO identify audience - to know what they need and who to post to (g+? twitter?)
-
 // create some variants
-variantF = {
-	id: 'F',
-	name: 'Freaky Flamingos',
-	conversionCount: 1501,
+variantH = {
+	id: 'H',
+	name: 'Hungry Hippopotami',
+	conversionCount: 2500,
 	eventCount: 3000
 };
 
-variantG = {
-	id: 'G',
-	name: 'Gregarious Gorillas',
+variantI = {
+	id: 'I',
+	name: 'Irritable Iguanas',
 	conversionCount: 1500,
 	eventCount: 3000
 };
 
-// add them to your A/B test
-mySixpack.addVariant(variantF);
-mySixpack.addVariant(variantG);
+myConfidence.addVariant(variantH);
+myConfidence.addVariant(variantI);
 
-// evaluate them to get the result
-result = mySixpack.getResult();
+
+result = myConfidence.getResult();
 
 console.log(result);
 // console.log('thing!!!!:', testResult);
