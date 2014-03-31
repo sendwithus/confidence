@@ -23,9 +23,26 @@ var mySixpack = new Sixpack();
 
 // TODO identify audience - to know what they need and who to post to (g+? twitter?)
 
-mySixpack.addVersion('G', { name: 'Gregarious Gorillas', eventCount: 1500, totalCount: 3000 });
-mySixpack.addVersion('H', { name: 'Hungry Hippopotami', eventCount: 2500, totalCount: 3000 });
+// create some variants
+variantF = {
+	id: 'F',
+	name: 'Freaky Flamingos',
+	conversionCount: 1501,
+	eventCount: 3000
+};
 
+variantG = {
+	id: 'G',
+	name: 'Gregarious Gorillas',
+	conversionCount: 1500,
+	eventCount: 3000
+};
+
+// add them to your A/B test
+mySixpack.addVariant(variantF);
+mySixpack.addVariant(variantG);
+
+// evaluate them to get the result
 result = mySixpack.getResult();
 
 console.log(result);

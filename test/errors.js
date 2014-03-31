@@ -4,33 +4,35 @@ var Sixpack = require('../Sixpack.js');
 
 // TODO:  Change error messages to say what the test /should/ do instead of what it does.
 
-module.exports['Add Version'] = {
+module.exports['Add Variant'] = {
 
   // Verifies that the total count cannot be zero.
-  'Incorrectly formatted version': function(test) {
+  'Incorrectly formatted variant': function(test) {
     sixpack = new Sixpack();
     test.ok(sixpack);
 
     test.throws(function() {
-      sixpack.addVersion('A', {
-        name: 'Original',
-        eventCount: 1356,
+      sixpack.addVariant({
+        id: 'A',
+        name: 'Variant A',
+        conversionCount: 1356,
       });
-    }, Error, 'version object needs name, eventCount, and totalCount properties');
+    }, Error, 'variant object should have not had name, conversionCount, and eventCount properties');
     test.done();
   },
 
-  'Correctly formatted version adds successfully': function(test) {
+  'Correctly formatted variant adds successfully': function(test) {
     sixpack = new Sixpack();
     test.ok(sixpack);
 
-    sixpack.addVersion('B', {
-      name: 'New',
-      eventCount: 3000,
-      totalCount: 3000
+    sixpack.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 3000,
+      eventCount: 3000
     });
 
-    test.ok(sixpack._versions.hasOwnProperty('B'));
+    test.ok(sixpack._variants.hasOwnProperty('B'));
 
     test.done();
   },
@@ -38,36 +40,29 @@ module.exports['Add Version'] = {
 
 //**************************************************************************//
 
-module.exports['Get Version'] = {
+module.exports['Get Variant'] = {
 
-  'Test existence of specific version': function(test) {
+  'Test existence of specific variant': function(test) {
 
-    this.sixpack = new Sixpack();
+    sixpack = new Sixpack();
     test.ok(sixpack);
 
-    this.sixpack.addVersion('A', {
-      name: 'Original',
-      eventCount: 1356,
-      totalCount: 3150
-    });
-    this.sixpack.addVersion('B', {
-      name: 'Original',
-      eventCount: 2356,
-      totalCount: 3150
+    sixpack.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 1356,
+      eventCount: 3150
     });
 
-    test.ok(this.sixpack);
-    var that = this;
-
-    // Verify that the requested version throws an error when it doesn't exist
+    // Verify that the requested variant throws an error when it doesn't exist
     test.throws(function() {
-      that.sixpack.getVersion('F');
-    }, Error, 'Version F should not have existed.');
+      sixpack.getVariant('F');
+    }, Error, 'Variant F should not have existed.');
 
-    // Verify that the requested version doesn't throw an error when it does exist
+    // Verify that the requested variant doesn't throw an error when it does exist
     test.doesNotThrow(function() {
-      that.sixpack.getVersion('A');
-    }, Error, 'Version A should have existed.');
+      sixpack.getVariant('A');
+    }, Error, 'Variant A should have existed.');
 
     test.done();
   },
@@ -75,25 +70,25 @@ module.exports['Get Version'] = {
 
 //**************************************************************************//
 
-module.exports['Has Versions'] = {
+module.exports['Has Variants'] = {
 
-  'Test existence of any version' : function(test) {
+  'Test existence of any variant' : function(test) {
 
     var sixpack = new Sixpack();
     test.ok(sixpack);
 
+    // If no variants have been added, hasVariants returns false
+    test.equals(sixpack.hasVariants(sixpack._variants), false, '_variants should be empty');
 
-    // If no versions have been added, hasVersions returns false
-    test.equals(sixpack.hasVersions(sixpack._versions), false, 'No versions have been added');
-
-    sixpack.addVersion('A', {
-      name: 'Version A',
-      eventCount: 3000,
-      totalCount: 3000
+    sixpack.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 3000,
+      eventCount: 3000
     });
 
-    // If a version has been added, hasVersions returns true
-    test.equals(sixpack.hasVersions(sixpack._versions), true, 'At least one version has been added');
+    // If a variant has been added, hasVariants returns true
+    test.equals(sixpack.hasVariants(sixpack._variants), true, '_variants should not be empty');
 
     test.done();
   },
@@ -102,104 +97,118 @@ module.exports['Has Versions'] = {
 //**************************************************************************//
 
 module.exports['Get Result'] = {
-  // Verifies that an error is thrown when no versions have been added
-  // and if versions have been added, no error is thrown.
-  'No versions': function(test) {
+  // Verifies that an error is thrown when no variants have been added
+  // and if variants have been added, no error is thrown.
+  'No variants': function(test) {
     var sixpack = new Sixpack();
     test.ok(sixpack);
 
     test.throws(function() {
       sixpack.getResult();
-    }, Error, 'There are no versions available.');
+    }, Error, 'There are no variants available.');
 
-    sixpack.addVersion('A', {
-      name: 'Original',
-      eventCount: 1356,
-      totalCount: 3150
+    sixpack.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 1356,
+      eventCount: 3150
     });
-    sixpack.addVersion('B', {
-      name: 'New',
-      eventCount: 1356,
-      totalCount: 3150
+    sixpack.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 1356,
+      eventCount: 3150
     });
 
     test.doesNotThrow(function() {
       sixpack.getResult();
-    }, Error, 'There should have been versions available.');
+    }, Error, 'There should have been variants available.');
 
     test.done();
   },
-  // Verifies that if there is a version with less than 100 total count,
+  // Verifies that if there is a variant with less than 100 total count,
   // there is not enough data to produce a result.
-  'Less than 100 totalCount': function(test) {
+  'Less than 100 eventCount': function(test) {
     var sixpack = new Sixpack();
     test.ok(sixpack);
 
-    sixpack.addVersion('A', {
-      name: 'Original',
-      eventCount: 20,
-      totalCount: 50
+    sixpack.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 20,
+      eventCount: 50
     });
 
     var result = sixpack.getResult();
 
-    // Only one version
-    test.equal(result.status, Sixpack.STATUS_NOT_ENOUGH_DATA, 'Not enough data');
-    test.equal(result.winner, null, 'No winner');
-    test.equal(result.confidenceInterval, null, 'No confidence interval');
-    test.equal(result.readable, 'There is not enough data to determine a conclusive result.', 'Not enough data to determine result');
+    // Only one variant: no winner and not enough data
+    test.equal(result.hasWinner, false, 'There should not be a winner');
+    test.equal(result.hasEnoughData, false, 'There should not be enough data');
+    test.equal(result.winnerID, null, 'There should be no winnerID');
+    test.equal(result.winnerName, null, 'There should be no winnerName');
+    test.equal(result.confidenceInterval, null, 'There should be no confidence interval');
+    test.equal(result.readable, 'There is not enough data to determine a conclusive result.', 'There should not be enough data to determine result');
 
-    // Another version that has enough data
-    sixpack.addVersion('B', {
+    // Another variant that has enough data
+    sixpack.addVariant({
+      id: 'B',
       name: 'New',
-      eventCount: 800,
-      totalCount: 1000
+      conversionCount: 800,
+      eventCount: 1000
     });
 
     result = sixpack.getResult();
 
-    test.equal(result.status, Sixpack.STATUS_NOT_ENOUGH_DATA, 'Not enough data');
-    test.equal(result.winner, null, 'No winner');
-    test.equal(result.confidenceInterval, null, 'No confidence interval');
-    test.equal(result.readable, 'There is not enough data to determine a conclusive result.', 'Not enough data to determine result');
-
+   // Because Variant A does not have enough data, the test does not have enough data.
+    test.equal(result.hasWinner, false, 'There should not be a winner');
+    test.equal(result.hasEnoughData, false, 'There should not be enough data');
+    test.equal(result.winnerID, null, 'There should be no winnerID');
+    test.equal(result.winnerName, null, 'There should be no winnerName');
+    test.equal(result.confidenceInterval, null, 'There should be no confidence interval');
+    test.equal(result.readable, 'There is not enough data to determine a conclusive result.', 'There should not be enough data to determine result');
 
     test.done();
   },
-  // Verifies that if there is a version with greater than 100 total count,
+  // Verifies that if there is a variant with greater than 100 total count,
   // if we haven't reached the required sample size there is not enough data
   // to produce a result
-  'More than 100 totalCount but still not enough data': function(test) {
+  'More than 100 eventCount but still not enough data': function(test) {
     var sixpack = new Sixpack();
     test.ok(sixpack);
 
-    sixpack.addVersion('A', {
-      name: 'Original',
-      eventCount: 20,
-      totalCount: 101
+    sixpack.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 20,
+      eventCount: 101
     });
 
     var result = sixpack.getResult();
 
-    // Only one version
-    test.equal(result.status, Sixpack.STATUS_NOT_ENOUGH_DATA, 'Not enough data');
-    test.equal(result.winner, null, 'No winner');
-    test.equal(result.confidenceInterval, null, 'No confidence interval');
-    test.equal(result.readable, 'There is not enough data to determine a conclusive result.', 'Not enough data to determine result');
+    // Only one variant
+    test.equal(result.hasWinner, false, 'There should not be a winner');
+    test.equal(result.hasEnoughData, false, 'There should not be enough data');
+    test.equal(result.winnerID, null, 'There should be no winnerID');
+    test.equal(result.winnerName, null, 'There should be no winnerName');
+    test.equal(result.confidenceInterval, null, 'There should be no confidence interval');
+    test.equal(result.readable, 'There is not enough data to determine a conclusive result.', 'There should not be enough data to determine result');
 
-    // Another version with not enough data
-    sixpack.addVersion('B', {
-      name: 'New',
-      eventCount: 25,
-      totalCount: 101
+    // Another variant with not enough data
+    sixpack.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 25,
+      eventCount: 101
     });
 
     result = sixpack.getResult();
 
-    test.equal(result.status, Sixpack.STATUS_NOT_ENOUGH_DATA, 'Not enough data');
-    test.equal(result.winner, null, 'No winner');
-    test.equal(result.confidenceInterval, null, 'No confidence interval');
-    test.equal(result.readable, 'There is not enough data to determine a conclusive result.', 'Not enough data to determine result');
+    test.equal(result.hasWinner, false, 'There should not be a winner');
+    test.equal(result.hasEnoughData, false, 'There should not be enough data');
+    test.equal(result.winnerID, null, 'There should be no winnerID');
+    test.equal(result.winnerName, null, 'There should be no winnerName');
+    test.equal(result.confidenceInterval, null, 'There should be no confidence interval');
+    test.equal(result.readable, 'There is not enough data to determine a conclusive result.', 'There should not be enough data to determine result');
 
     test.done();
   },
@@ -208,26 +217,29 @@ module.exports['Get Result'] = {
     var sixpack = new Sixpack();
     test.ok(sixpack);
 
-    sixpack.addVersion('A', {
-      name: 'Original',
-      eventCount: 200,
-      totalCount: 3150
+    sixpack.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 200,
+      eventCount: 3150
     });
-    sixpack.addVersion('B', {
-      name: 'New',
-      eventCount: 201,
-      totalCount: 3150
+    sixpack.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 201,
+      eventCount: 3150
     });
 
     var result = sixpack.getResult();
 
-    test.equal(result.status, Sixpack.STATUS_ENOUGH_DATA_AND_NO_RESULT, 'Enough data, no result');
-    test.equal(result.winner, null, 'No winner');
+    test.equal(result.hasWinner, false, 'There should not be a winner');
+    test.equal(result.hasEnoughData, true, 'There should be enough data');
+    test.equal(result.winnerID, null, 'There should be no winnerID');
+    test.equal(result.winnerName, null, 'There should be no winnerName');
     test.equal(result.confidenceInterval, null, 'No confidence interval');
     test.equal(result.readable, 'We have enough data to say we cannot predict a winner with 95% certainty.', 'Enough data, but no conclusive result');
 
     test.done();
-
 
   },
   // Verifies correct output if there is enough data and there is a winner.
@@ -235,27 +247,33 @@ module.exports['Get Result'] = {
     var sixpack = new Sixpack();
     test.ok(sixpack);
 
-    sixpack.addVersion('A', {
-      name: 'Original',
-      eventCount: 800,
-      totalCount: 3150
+    sixpack.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 800,
+      eventCount: 3150
     });
-    sixpack.addVersion('B', {
-      name: 'New',
-      eventCount: 200,
-      totalCount: 3150
+    sixpack.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 200,
+      eventCount: 3150
     });
 
     var result = sixpack.getResult();
 
-    test.equal(result.status, Sixpack.STATUS_ENOUGH_DATA_AND_RESULT, 'Enough data, and we have a winner');
-    test.equal(result.statusMessage, Sixpack.STATUS_MESSAGE_ENOUGH_DATA_AND_RESULT, 'Enough data, and we have a winner');
-    test.equal(result.winner, 'Original', 'Original is the winner');
+    var expectedResult = 'In a hypothetical experiment that is repeated infinite times, the average rate of the';
+    expectedResult += ' "Variant A" variant will fall between 23.88% and 26.92%, 95% of the time';
+
+    test.equal(result.hasWinner, true, 'There should be a winner');
+    test.equal(result.hasEnoughData, true, 'There should be enough data');
+    test.equal(result.winnerID, 'A', 'A should be the winnerID');
+    test.equal(result.winnerName, 'Variant A', 'Variant A should be the winnerName');
     test.deepEqual(result.confidenceInterval, {
       min: 23.88,
       max: 26.92
-    }, 'Confidence interval does not overlap');
-    test.equal(result.readable, 'In a hypothetical experiment that is repeated infinite times, the average rate of the "Original" version will fall between 23.88% and 26.92%, 95% of the time', 'The result');
+    }, 'Confidence interval should not overlap');
+    test.equal(result.readable, expectedResult , 'The result should have the long winning speech');
 
     test.done();
   },
@@ -269,8 +287,19 @@ module.exports['Analyze Confidence Intervals'] = {
     var sixpack = new Sixpack();
     test.ok(sixpack);
 
-    sixpack.addVersion('A', { name: 'Version A', eventCount: 1500, totalCount: 3000 });
-    sixpack.addVersion('B', { name: 'Version B', eventCount: 1501, totalCount: 3000 });
+    sixpack.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 1500,
+      eventCount: 3000
+    });
+
+    sixpack.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 1501,
+      eventCount: 3000
+    });
 
     var confidenceIntervals = {};
 
@@ -282,17 +311,14 @@ module.exports['Analyze Confidence Intervals'] = {
 
     var messageNoWinner = 'We have enough data to say we cannot predict a winner with 95% certainty.';
 
-    var actualResult = sixpack.analyzeConfidenceIntervals(confidenceIntervals);
+    var result = sixpack.analyzeConfidenceIntervals(confidenceIntervals);
 
-    var expectedResult = {
-      status: Sixpack.STATUS_ENOUGH_DATA_AND_NO_RESULT,
-      statusMessage: Sixpack.STATUS_MESSAGE_ENOUGH_DATA_AND_NO_RESULT,
-      winner: null,
-      confidenceInterval: null,
-      readable: messageNoWinner
-    };
-
-    test.deepEqual(actualResult, expectedResult, 'This should return { status: 3, winner: null, confidenceIntervals: null, readable: "We have enough data to say we cannot predict a winner with 95% certainty." }');
+    test.equal(result.hasWinner, false, 'There should not be a winner');
+    test.equal(result.hasEnoughData, true, 'There should be enough data');
+    test.equal(result.winnerID, null, 'There should be no winnerID');
+    test.equal(result.winnerName, null, 'There should be no winnerName');
+    test.equal(result.confidenceInterval, null, 'No confidence interval');
+    test.equal(result.readable, 'We have enough data to say we cannot predict a winner with 95% certainty.', 'Enough data, but no conclusive result');
 
     test.done();
   },
@@ -301,8 +327,19 @@ module.exports['Analyze Confidence Intervals'] = {
     var sixpack = new Sixpack();
     test.ok(sixpack);
 
-    sixpack.addVersion('A', { name: 'Version A', eventCount: 1500, totalCount: 3000 });
-    sixpack.addVersion('B', { name: 'Version B', eventCount: 2500, totalCount: 3000 });
+    sixpack.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 1500,
+      eventCount: 3000
+    });
+
+    sixpack.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 2500,
+      eventCount: 3000
+    });
 
     var confidenceIntervals = {};
 
@@ -310,19 +347,19 @@ module.exports['Analyze Confidence Intervals'] = {
 
     confidenceIntervals['B'] = { min: 0.8199972225115139, max: 0.8466694441551529 };
 
-    var messageWinner = 'In a hypothetical experiment that is repeated infinite times, the average rate of the "Version B" version will fall between 82% and 84.67%, 95% of the time';
+    var messageWinner = 'In a hypothetical experiment that is repeated infinite times, the average rate of the "Variant B" variant will fall between 82% and 84.67%, 95% of the time';
 
-    var actualResult = sixpack.analyzeConfidenceIntervals(confidenceIntervals);
+    var result = sixpack.analyzeConfidenceIntervals(confidenceIntervals);
 
-    var expectedResult = {
-      status: Sixpack.STATUS_ENOUGH_DATA_AND_RESULT,
-      statusMessage: Sixpack.STATUS_MESSAGE_ENOUGH_DATA_AND_RESULT,
-      winner: 'Version B',
-      confidenceInterval: { min: 82, max: 84.67 },
-      readable: messageWinner
-    };
-
-    test.deepEqual(actualResult, expectedResult, 'This should return { status: 2, winner: Version B, confidenceIntervals: { min: 82, max: 84.67 }, readable: long winning text" }');
+    test.equal(result.hasWinner, true, 'There should be a winner');
+    test.equal(result.hasEnoughData, true, 'There should be enough data');
+    test.equal(result.winnerID, 'B', 'B should be the winnerID');
+    test.equal(result.winnerName, 'Variant B', 'Variant B should be the winnerName');
+    test.deepEqual(result.confidenceInterval, {
+      min: 82,
+      max: 84.67
+    }, 'Confidence interval should not overlap');
+    test.equal(result.readable, messageWinner, 'The result should have the long winning speech');
 
     test.done();
   },
@@ -365,10 +402,11 @@ module.exports['Get Required Sample Size'] = {
   'Rate is 0': function(test) {
 
     sixpack = new Sixpack();
-    sixpack.addVersion('A', {
-      name: 'Original',
-      eventCount: 0,
-      totalCount: 50
+    sixpack.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 0,
+      eventCount: 50
     });
 
     test.ok(sixpack);
@@ -381,21 +419,16 @@ module.exports['Get Required Sample Size'] = {
   'Rate is 1': function(test) {
 
     sixpack = new Sixpack();
-    sixpack.addVersion('B', {
-      name: 'Version B',
-      eventCount: 101,
-      totalCount: 101
+    sixpack.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 101,
+      eventCount: 101
     });
     var requiredSampleSize = test.equal(sixpack.getRequiredSampleSize('B'), 100, "If rate is 1, the required sample size should be 100");
 
     test.done();
   },
-
-  // When should the required sample size be > 100?
-  'Rate is between 0 and 1': function(test) {
-
-    test.done();
-  }
 };
 
 //**************************************************************************//
@@ -408,22 +441,24 @@ module.exports['Has Enough Data'] = {
     test.ok(sixpack);
 
   // When should it say yes?
-  sixpack.addVersion('A', {
-      name: 'Version A',
-      eventCount: 2500,
-      totalCount: 3000
+  sixpack.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 2500,
+      eventCount: 3000
     });
 
-  test.equal(sixpack.hasEnoughData('A'), true, 'This version should have enough data');
+  test.equal(sixpack.hasEnoughData('A'), true, 'This variant should have enough data');
 
   // When should it say no?
-  sixpack.addVersion('B', {
-      name: 'Version B',
-      eventCount: 5,
-      totalCount: 10
+  sixpack.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 5,
+      eventCount: 10
     });
 
-  test.equal(sixpack.hasEnoughData('A'), true, 'This version should not have enough data');
+  test.equal(sixpack.hasEnoughData('A'), true, 'This variant should not have enough data');
 
   test.done();
   }
@@ -437,10 +472,11 @@ module.exports['Get Rate'] = {
   'Divide by zero': function(test) {
 
     sixpack = new Sixpack();
-    sixpack.addVersion('A', {
-      name: 'Original',
-      eventCount: 1356,
-      totalCount: 0
+    sixpack.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 1356,
+      eventCount: 0
     });
 
     test.ok(sixpack);
@@ -456,10 +492,11 @@ module.exports['Get Rate'] = {
   'Divide by negative': function(test) {
 
     sixpack = new Sixpack();
-    sixpack.addVersion('B', {
-      name: 'Version B',
-      eventCount: 1356,
-      totalCount: -1
+    sixpack.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 1356,
+      eventCount: -1
     });
 
     test.ok(sixpack);
@@ -483,29 +520,33 @@ module.exports['Get Confidence Interval'] = {
     test.ok(sixpack);
 
     // If rate is 0, confidence interval will be [0,0]
-    sixpack.addVersion('A', {
-      name: 'Version A',
-      eventCount: 0,
-      totalCount: 3000
+    sixpack.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 0,
+      eventCount: 3000
     });
 
-    test.deepEqual(sixpack.getConfidenceInterval('A'), { min: 0, max: 0 }, 'Rate is 0, interval should be 0, 0');
+    test.deepEqual(sixpack.getConfidenceInterval('A'), { min: 0, max: 0 }, 'Rate is 0, interval should be [0, 0]');
 
     // If rate is 1, confidence interval will be [0,0]
-    sixpack.addVersion('B', {
-      name: 'Version B',
-      eventCount: 3000,
-      totalCount: 3000
+    sixpack.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 3000,
+      eventCount: 3000
     });
 
-    test.deepEqual(sixpack.getConfidenceInterval('B'), { min: 1, max: 1 }, 'Rate is 1, interval should be 1, 1');
+    test.deepEqual(sixpack.getConfidenceInterval('B'), { min: 1, max: 1 }, 'Rate is 1, interval should be [1, 1]');
 
     // Something in between will be something in between (que sera sera)?
-    sixpack.addVersion('C', {
-      name: 'Version C',
-      eventCount: 1500,
-      totalCount: 3000
+    sixpack.addVariant({
+      id: 'C',
+      name: 'Variant C',
+      conversionCount: 1500,
+      eventCount: 3000
     });
+
     test.deepEqual(sixpack.getConfidenceInterval('C'), { min: 0.4821077297881646, max: 0.5178922702118354 }, 'Rate is between 0 and 1, interval should be between 0 and 1');
 
     test.done();
@@ -520,10 +561,11 @@ module.exports['Get Standard Error'] = {
   'Test if rate is 0': function(test) {
 
     sixpack = new Sixpack();
-    sixpack.addVersion('A', {
-      name: 'Original',
-      eventCount: 0,
-      totalCount: 3150
+    sixpack.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 0,
+      eventCount: 3150
     });
     test.ok(sixpack);
 
@@ -535,10 +577,11 @@ module.exports['Get Standard Error'] = {
   'Test if rate is between 0 and 1': function(test) {
 
     sixpack = new Sixpack();
-    sixpack.addVersion('B', {
-      name: 'New',
-      eventCount: 1356,
-      totalCount: 3150
+    sixpack.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 1356,
+      eventCount: 3150
     });
     test.ok(sixpack);
     // 0 < rate < 1
@@ -550,10 +593,11 @@ module.exports['Get Standard Error'] = {
   'Test if rate is 1': function(test) {
 
     sixpack = new Sixpack();
-    sixpack.addVersion('C', {
-      name: 'Newer',
-      eventCount: 3150,
-      totalCount: 3150
+    sixpack.addVariant({
+      id: 'C',
+      name: 'Variant C',
+      conversionCount: 3150,
+      eventCount: 3150
     });
     test.ok(sixpack);
     // rate is 1
