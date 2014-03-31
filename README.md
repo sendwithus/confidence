@@ -196,7 +196,7 @@ result = myConfidence.getResult();
 
 Found a bug? Create an [issue](https://github.com/sendwithus/confidence/issues) here on GitHub!
 
-For general questions, tweet me [@jessicaraygun](https://twitter.com/jessicaraygun)
+For general questions, tweet me [@jessicaraygun](https://twitter.com/jessicaraygun).
 
 ## Using with Node.js
 
