@@ -60,7 +60,7 @@ mySixpack.addVersion('B', versionB);
 Evaluates the versions in your A/B test and determines which is the winning version, if there is one.
 
 Returns an object containing:
- 
+
  - status: a short status identifier indicating the outcome (1, 2, or 3)
  - statusMessage: a more descriptive status
    - 1: There is not enough data to determine a result.
@@ -73,25 +73,25 @@ Returns an object containing:
 ## Examples
 
 ***Case 1: There is not enough data to determine a result.***
- 
-```
+
+``` js
 // create some versions
-versionC = { 
-	name: 'Cranky Capybaras', 
-	eventCount: 5, 
-	totalCount: 50 
+versionC = {
+	name: 'Cranky Capybaras',
+	eventCount: 5,
+	totalCount: 50
 };
 
-versionD = { 
-	name: 'Diligent Ducklings', 
-	eventCount: 60, 
-	totalCount: 200 
+versionD = {
+	name: 'Diligent Ducklings',
+	eventCount: 60,
+	totalCount: 200
 };
 
-versionE = { 
-	name: 'Effervescent Elephants', 
-	eventCount: 30, 
-	totalCount: 40 
+versionE = {
+	name: 'Effervescent Elephants',
+	eventCount: 30,
+	totalCount: 40
 };
 
 
@@ -118,16 +118,16 @@ result = mySixpack.getResult();
 
 ```
 // create some versions
-versionF = { 
-	name: 'Freaky Flamingos', 
-	eventCount: 1501, 
-	totalCount: 3000 
+versionF = {
+	name: 'Freaky Flamingos',
+	eventCount: 1501,
+	totalCount: 3000
 };
 
-versionG = { 
-	name: 'Gregarious Gorillas', 
-	eventCount: 1500, 
-	totalCount: 3000 
+versionG = {
+	name: 'Gregarious Gorillas',
+	eventCount: 1500,
+	totalCount: 3000
 };
 
 // add them to your A/B test
@@ -151,16 +151,16 @@ result = mySixpack.getResult();
 
 ```
 // create some versions
-versionH = { 
-	name: 'Hungry Hippopotami', 
-	eventCount: 2500, 
-	totalCount: 3000 
+versionH = {
+	name: 'Hungry Hippopotami',
+	eventCount: 2500,
+	totalCount: 3000
 };
 
-versionI = { 
-	name: 'Irritable Iguanas', 
-	eventCount: 1500, 
-	totalCount: 3000 
+versionI = {
+	name: 'Irritable Iguanas',
+	eventCount: 1500,
+	totalCount: 3000
 };
 
 mySixpack.addVersion('H', versionH);
