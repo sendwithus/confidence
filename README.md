@@ -67,8 +67,10 @@ Returns an object containing:
  - `hasEnoughData`: `true` if there is enough data to calculate a statistically significant result, `false` otherwise
  - `winnerID`: the ID of the winning variant, or `null` if there isn't one
  - `winnerName`: the name of the winning variant or `null` if there isn't one
- - `confidenceInterval`: the of the confidence interval, or `null` if there is no winner. ex: `{min: 0.154, max: 0.187}`
- - `readable`: human readable result. ex: `There is not enough data to determine a winner.`
+ - `confidenceInterval`: the confidence interval, or `null` if there is no winner. 
+  - ex: `{ min: 0.154, max: 0.187 }`
+ - `readable`: human readable result. 
+  - ex: `There is not enough data to determine a winner.`
 
 ## Examples
 
@@ -199,15 +201,18 @@ result = myConfidence.getResult();
 */
 ```
 
-## Issues and Questions
-
-Found a bug? Create an [issue](https://github.com/sendwithus/confidence/issues) here on GitHub!
-
-For general questions, tweet me [@jessicaraygun](https://twitter.com/jessicaraygun).
-
 ## Run Tests
 
 ```
 npm install
 npm test
 ```
+
+## Issues and Questions
+
+Found a bug? Create an [issue](https://github.com/sendwithus/confidence/issues) here on GitHub!
+
+For general questions, tweet me [@jessicaraygun](https://twitter.com/jessicaraygun) or 
+
+## Author
+Developed and maintained by [Jessica Thomas](mailto:jessica@sendwithus.com), Data Scientist @ [sendwithus.com](https://www.sendwithus.com)
