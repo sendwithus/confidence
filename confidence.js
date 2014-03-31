@@ -20,7 +20,7 @@
 		if (variant.hasOwnProperty('id') &&
 			variant.hasOwnProperty('name') &&
 			variant.hasOwnProperty('conversionCount') &&
-			variant.hasOwnProperty('eventCount')){
+			variant.hasOwnProperty('eventCount')) {
 			this._variants[variant.id] = variant;
 		} else {
 			throw new Error('variant object needs name, conversionCount, and eventCount properties');
@@ -28,7 +28,7 @@
 	};
 
 	Confidence.prototype.getVariant = function(variantID) {
-		if (this._variants.hasOwnProperty(variantID)){
+		if (this._variants.hasOwnProperty(variantID)) {
 			return this._variants[variantID];
 		} else {
 			throw new Error('The variant you requested does not exist.');
@@ -135,7 +135,7 @@
 
 
 		// if highest min > highest max, declare the ID of the winner to be the min
-		if (largestMin > largestMax){
+		if (largestMin > largestMax) {
 			winningVariantName = this._variants[idWithLargestMin].name;
 			var roundedMin = (Math.round(10000 * confidenceIntervals[idWithLargestMin].min)/100);
 			var roundedMax = (Math.round(10000 * confidenceIntervals[idWithLargestMin].max)/100);
