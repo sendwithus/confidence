@@ -1,0 +1,76 @@
+Greg:
+
+- use markdown
+- copy https://github.com/twitter/typeahead.js/blob/master/README.md
+- everything on one page if possible
+
+## Description
+This API is designed to help you make sense of your A/B test results.
+
+// MAINTENANCE ****************************************************//
+
+addVersion
+
+usage:
+.addVersion(<versionID>, { name: <name>, eventCount: <eventCount>, totalCount: <totalCount> })
+
+description:
+Adds a version to the A/B test
+
+returns:
+
+notes:
+find more descriptive name than eventCount and totalCount
+
+//**************************************************************************//
+
+getVersion
+
+usage:
+.getVersion(<versionID>)
+
+Gets the properties of the version you request
+
+//**************************************************************************//
+
+hasVersions
+
+Checks if you have added any versions
+
+// HELPER FUNCTIONS ********************************************************//
+
+getRate
+
+Returns the conversion rate for a specified version your A/B test.
+
+//**************************************************************************//
+
+getStandardError
+
+Gets the standard error for a specified version
+
+//**************************************************************************//
+
+getRequiredSampleSize
+
+Gets the number of total
+
+// PRIVATE ****************************************************************//
+
+sortList
+
+//**************************************************************************//
+
+hasEnoughData
+
+// MEATY STUFF THAT DOES MOST OF THE WORK *********************************//
+
+getConfidenceInterval
+
+//**************************************************************************//
+
+analyzeConfidenceIntervals
+
+//**************************************************************************//
+
+getResult

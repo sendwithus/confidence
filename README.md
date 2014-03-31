@@ -12,7 +12,6 @@ npm install sixpack
 ### Initialization
 
 ``` js
-var Sixpack = require('sixpack');
 var mySixpack = new Sixpack();
 ```
 
@@ -20,9 +19,9 @@ Versions in sixpack look like this:
 
 ``` js
 version = {
-	name: 'The name',	// descriptive identifier
-	eventCount: 50,		// number of people who completed the desired action
-	totalCount: 300 	// total number of people who experienced this version
+	name: 'Variant A',	// descriptive identifier
+	eventCount: 50,		// number of events that successfully converted *** CONVERSIONCOUNT
+	totalCount: 300 	// total number of events tracked ***EVENTCOUNT
 }
 ```
 
@@ -66,8 +65,8 @@ Returns an object containing:
    - 1: There is not enough data to determine a result.
    - 2: There is enough data, but the results are too close and there is no clear winner.
    - 3: There is enough data, and there is a clear winner.
- - winner: the name of the winner or `null` if there isn't one (statuses 1 and 2)
- - confidenceInterval: the minimum and maximum values of the confidence interval, or `null` if there is no winner (statuses 1 and 2)
+ - winner: the name of the winner or `null` if there isn't one (for status 1 and 2)
+ - confidenceInterval: the minimum and maximum values of the confidence interval, or `null` if there is no winner (for status 1 and 2)
  - readable: your human readable result
 
 ## Examples
@@ -185,7 +184,11 @@ Found a bug? Create an [issue](https://github.com/sendwithus/sixpack/issues) her
 
 For general questions, tweet me [@jessicaraygun](https://twitter.com/jessicaraygun)
 
-## Testing
+## Using with Node.js
+
+###Testing...
+
+###Example...
 
 // TODO Confirm later
 
@@ -198,3 +201,7 @@ npm test
 
 // TODO license from sendwithus - where is this? - as a file
 https://github.com/sendwithus/templates/blob/master/LICENSE
+
+// notice and licence from sendwithus python:
+
+https://github.com/sendwithus/sendwithus_python/blob/master/LICENSE
