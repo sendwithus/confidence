@@ -1,7 +1,9 @@
-## Description
-Confidence.js is designed to help you make sense of your A/B test results.
+## Confidence
+Confidence.js is a light-weight javascript library to help you make sense of your A/B test results.
 
-## Getting started!!!!
+## Getting started
+
+[Download confidence.js](https://raw.githubusercontent.com/sendwithus/confidence/master/confidence.js)
 
 Include `confidence.js` on your page.
 ``` HTML
@@ -20,10 +22,10 @@ Confidence helps you compare the variants in your A/B test. Variants in Confiden
 
 ``` js
 variant = {
-	id: 'A',		// short identifier
-	name: 'Variant A',	// descriptive identifier
-	conversionCount: 50,	// number of events that successfully converted
-	eventCount: 300 	// total number of events tracked
+	id: 'A',                // short identifier
+	name: 'Variant A',      // descriptive identifier
+	conversionCount: 50,    // number of events that successfully converted
+	eventCount: 300         // total number of events tracked
 }
 ```
 
@@ -33,7 +35,7 @@ Adds a variant to your A/B test. You can add and compare as many variants as you
 
 ***Parameters:***
 
- - `variant`: the data you want to add
+ - `variant`: the variant object you'd like to add to this A/B test
 
 ``` js
 // first, create some variants
@@ -63,12 +65,14 @@ Evaluates the variants in your A/B test and determines which is the winning vari
 
 Returns an object containing:
 
- - `hasWinner`: true if a winner could be calculated, false otherwise
- - `hasEnoughData`: true if there is enough data to calculate a statistically significant result, false otherwise
- - `winnerID`: the ID of the winning variation, or `null` if there isn't one
- - `winnerName`: the name of the winning variation or `null` if there isn't one
- - `confidenceInterval`: the minimum and maximum values of the confidence interval, or `null` if there is no winner
- - `readable`: your human readable result
+ - `hasWinner`: `true` if a winner could be calculated, `false` otherwise
+ - `hasEnoughData`: `true` if there is enough data to calculate a statistically significant result, `false` otherwise
+ - `winnerID`: the ID of the winning variant, or `null` if there isn't one
+ - `winnerName`: the name of the winning variant or `null` if there isn't one
+ - `confidenceInterval`: the confidence interval, or `null` if there is no winner. 
+  - ex: `{ min: 0.154, max: 0.187 }`
+ - `readable`: human readable result. 
+  - ex: `There is not enough data to determine a winner.`
 
 ## Examples
 
@@ -199,15 +203,24 @@ result = myConfidence.getResult();
 */
 ```
 
-## Issues and Questions
-
-Found a bug? Create an [issue](https://github.com/sendwithus/confidence/issues) here on GitHub!
-
-For general questions, tweet me [@jessicaraygun](https://twitter.com/jessicaraygun).
-
 ## Run Tests
 
 ```
 npm install
 npm test
 ```
+## TODO
+- Variant `name` parameter optional
+ - requires changes to `addVariant`, and `errors.js`
+ - add "not provided" default name if left blank
+- add `removeVariant` function
+- zscore table lookup to provide more accurate results if 95% confidence is not available
+
+## Issues and Questions
+
+Found a bug? Create an [issue](https://github.com/sendwithus/confidence/issues) here on GitHub!
+
+For general questions, tweet me [@jessicaraygun](https://twitter.com/jessicaraygun) or 
+
+## Author
+Developed and maintained by [Jessica Thomas](mailto:jessica@sendwithus.com), Data Scientist @ [sendwithus.com](https://www.sendwithus.com)
