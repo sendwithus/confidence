@@ -210,11 +210,13 @@ npm install
 npm test
 ```
 ## TODO
-- Variant `name` parameter optional
+- variant `name` parameter optional
  - requires changes to `addVariant`, and `errors.js`
  - add "not provided" default name if left blank
 - add `removeVariant` function
 - zscore table lookup to provide more accurate results if 95% confidence is not available
+- fix readable result to make more sense
+ - http://en.wikipedia.org/wiki/Confidence_interval#Meaning_and_interpretation
 
 ## Issues and Questions
 
