@@ -1,10 +1,24 @@
-(function() {
+// if the module has no dependencies, the above pattern can be simplified to
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        // AMD. Register as an anonymous module.
+        define([], factory);
+    } else if (typeof exports === 'object') {
+        // Node. Does not work with strict CommonJS, but
+        // only CommonJS-like environments that support module.exports,
+        // like Node.
+        module.exports = factory();
+    } else {
+        // Browser globals (root is window)
+        root.Confidence = factory();
+  }
+}(this, function () {
 	/** Private Constants */
 	var DEFAULT_Z_SCORE = 1.96;
 	var DEFAULT_MARGIN_OF_ERROR = 0.01;
 
 	var Confidence = function(settings) {
-	    settings = settings || { };
+		settings = settings || { };
 
 		this._zScore = settings.hasOwnProperty('zScore') ? settings.zScore : DEFAULT_Z_SCORE;
 		this._marginOfError = settings.hasOwnProperty('marginOfError') ? settings.marginOfError : DEFAULT_MARGIN_OF_ERROR;
@@ -248,5 +262,5 @@
 		var standardError = Math.sqrt(rate*(1-rate)/variant.eventCount);
 		return standardError;
 	};
-	window.Confidence = Confidence;
-})();
+	return Confidence;
+}));
