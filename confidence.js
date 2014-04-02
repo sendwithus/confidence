@@ -154,10 +154,10 @@
 			var roundedMin = (Math.round(10000 * confidenceIntervals[idWithLargestMin].min)/100);
 			var roundedMax = (Math.round(10000 * confidenceIntervals[idWithLargestMin].max)/100);
 
-			var message = "In a hypothetical experiment that is repeated infinite times, the average rate of the \"";
+			var message = "With 95% confidence, the true population parameter of the \"";
 			message += winningVariantName + "\" variant will fall between ";
 			message += roundedMin + "% and ";
-			message += roundedMax + "%, 95% of the time";
+			message += roundedMax + "%.";
 
 			hasWinner = true;
 			hasEnoughData = true;
@@ -173,7 +173,7 @@
 			return result;
 		} else {
 			// otherwise, there is no winner
-			var messageNoWinner = "We have enough data to say we cannot predict a winner with 95% certainty.";
+			var messageNoWinner = "There is no winner, the results are too close.";
 
 			hasWinner = false;
 			hasEnoughData = true;

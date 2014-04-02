@@ -237,7 +237,7 @@ module.exports['Get Result'] = {
     test.equal(result.winnerID, null, 'There should be no winnerID');
     test.equal(result.winnerName, null, 'There should be no winnerName');
     test.equal(result.confidenceInterval, null, 'No confidence interval');
-    test.equal(result.readable, 'We have enough data to say we cannot predict a winner with 95% certainty.', 'Enough data, but no conclusive result');
+    test.equal(result.readable, 'There is no winner, the results are too close.', 'Enough data, but no conclusive result');
 
     test.done();
 
@@ -262,8 +262,8 @@ module.exports['Get Result'] = {
 
     var result = confidence.getResult();
 
-    var expectedResult = 'In a hypothetical experiment that is repeated infinite times, the average rate of the';
-    expectedResult += ' "Variant A" variant will fall between 23.88% and 26.92%, 95% of the time';
+    var expectedResult = 'With 95% confidence, the true population parameter of the';
+    expectedResult += ' "Variant A" variant will fall between 23.88% and 26.92%.';
 
     test.equal(result.hasWinner, true, 'There should be a winner');
     test.equal(result.hasEnoughData, true, 'There should be enough data');
@@ -318,7 +318,7 @@ module.exports['Analyze Confidence Intervals'] = {
     test.equal(result.winnerID, null, 'There should be no winnerID');
     test.equal(result.winnerName, null, 'There should be no winnerName');
     test.equal(result.confidenceInterval, null, 'No confidence interval');
-    test.equal(result.readable, 'We have enough data to say we cannot predict a winner with 95% certainty.', 'Enough data, but no conclusive result');
+    test.equal(result.readable, 'There is no winner, the results are too close.', 'Enough data, but no conclusive result');
 
     test.done();
   },
@@ -347,7 +347,8 @@ module.exports['Analyze Confidence Intervals'] = {
 
     confidenceIntervals['B'] = { min: 0.8199972225115139, max: 0.8466694441551529 };
 
-    var messageWinner = 'In a hypothetical experiment that is repeated infinite times, the average rate of the "Variant B" variant will fall between 82% and 84.67%, 95% of the time';
+    var messageWinner = 'With 95% confidence, the true population parameter of the';
+    messageWinner += ' "Variant B" variant will fall between 82% and 84.67%.';
 
     var result = confidence.analyzeConfidenceIntervals(confidenceIntervals);
 

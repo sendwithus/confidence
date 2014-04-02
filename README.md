@@ -69,9 +69,9 @@ Returns an object containing:
  - `hasEnoughData`: `true` if there is enough data to calculate a statistically significant result, `false` otherwise
  - `winnerID`: the ID of the winning variant, or `null` if there isn't one
  - `winnerName`: the name of the winning variant or `null` if there isn't one
- - `confidenceInterval`: the confidence interval, or `null` if there is no winner. 
+ - `confidenceInterval`: the confidence interval, or `null` if there is no winner.
   - ex: `{ min: 0.154, max: 0.187 }`
- - `readable`: human readable result. 
+ - `readable`: human readable result.
   - ex: `There is not enough data to determine a winner.`
 
 ## Examples
@@ -156,8 +156,7 @@ result = myConfidence.getResult();
 	winnerID: null,
 	winnerName: null,
 	confidenceInterval: null,
-	readable: 'We have enough data to say we cannot
-		predict a winner with 95% certainty.'
+	readable: 'There is no winner, the results are too close.'
 }
 */
 ```
@@ -194,11 +193,9 @@ result = myConfidence.getResult();
 	winnerID: 'H',
 	winnerName: 'Hungry Hippopotami',
 	confidenceInterval: { min: 82, max: 84.67 },
-	readable: 'In a hypothetical experiment that
-		is repeated infinite times, the average
-		rate of the "Hungry Hippopotami" variant
-		will fall between 82% and 84.67%, 95%
-		of the time'
+	readable: 'With 95% confidence, the true population
+		parameter of the "Hungry Hippopotami" variant will
+		fall between 82% and 84.67%.'
 }
 */
 ```
