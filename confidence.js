@@ -17,13 +17,13 @@
 	var DEFAULT_Z_SCORE = 1.96;
 	var DEFAULT_MARGIN_OF_ERROR = 0.01;
 
-	var Confidence = function(settings) {
-		settings = settings || { };
+	var Confidence = function() {
+		settings = { };
 
-		this._zScore = settings.hasOwnProperty('zScore') ? settings.zScore : DEFAULT_Z_SCORE;
-		this._marginOfError = settings.hasOwnProperty('marginOfError') ? settings.marginOfError : DEFAULT_MARGIN_OF_ERROR;
-		this._variants = {};
-		this._confidenceIntervals = {};
+		this._zScore = DEFAULT_Z_SCORE;
+		this._marginOfError = DEFAULT_MARGIN_OF_ERROR;
+		this._variants = { };
+		this._confidenceIntervals = { };
 	};
 
 	/** Public Constants **/
