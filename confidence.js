@@ -1,17 +1,17 @@
 // if the module has no dependencies, the above pattern can be simplified to
 (function (root, factory) {
-    if (typeof define === 'function' && define.amd) {
-        // AMD. Register as an anonymous module.
-        define([], factory);
-    } else if (typeof exports === 'object') {
-        // Node. Does not work with strict CommonJS, but
-        // only CommonJS-like environments that support module.exports,
-        // like Node.
-        module.exports = factory();
-    } else {
-        // Browser globals (root is window)
-        root.Confidence = factory();
-  }
+	if (typeof define === 'function' && define.amd) {
+		// AMD. Register as an anonymous module.
+		define([], factory);
+	} else if (typeof exports === 'object') {
+		// Node. Does not work with strict CommonJS, but
+		// only CommonJS-like environments that support module.exports,
+		// like Node.
+		module.exports = factory();
+	} else {
+		// Browser globals (root is window)
+		root.Confidence = factory();
+	}
 }(this, function () {
 	/** Private Constants */
 	var DEFAULT_Z_SCORE = 1.96;
@@ -103,7 +103,6 @@
 	};
 
 	Confidence.prototype.analyzeConfidenceIntervals = function(confidenceIntervals) {
-
 		// TODO if confidence interval bad format, throw an error
 
 		var minimums = [];
@@ -158,7 +157,6 @@
 			message += winningVariantName + "\" variant will fall between ";
 			message += roundedMin + "% and ";
 			message += roundedMax + "%.";
-
 			hasWinner = true;
 			hasEnoughData = true;
 
@@ -222,7 +220,6 @@
 	};
 
 	Confidence.prototype.getRate = function(variantID) {
-
 		var variant = this.getVariant(variantID);
 		if (variant.eventCount === 0) {
 			throw new Error('Total is zero: cannot divide by zero to produce rate.');
@@ -264,4 +261,3 @@
 	};
 	return Confidence;
 }));
-
