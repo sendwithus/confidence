@@ -29,6 +29,12 @@ variant = {
 }
 ```
 
+By default, Confidence assumes a normal distribution for each variation's conversion rate. It's results use a z score of 1.96 (2 standard deviations) a margin of error of 0.01. If you would like to use something different, pass it as a parameter when initializing the Confidence object. For instance:
+
+``` js
+var myConfidence = new Confidence({zScore: 1.5});
+```
+
 ### addVariant(variant)
 
 Adds a variant to your A/B test. You can add and compare as many variants as you'd like.
