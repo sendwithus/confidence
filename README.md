@@ -22,10 +22,10 @@ Confidence helps you compare the variants in your A/B test. Variants in Confiden
 
 ``` js
 variant = {
-	id: 'A',                // short identifier
-	name: 'Variant A',      // descriptive identifier
-	conversionCount: 50,    // number of events that successfully converted
-	eventCount: 300         // total number of events tracked
+  id: 'A',                // short identifier
+  name: 'Variant A',      // descriptive identifier
+  conversionCount: 50,    // number of events that successfully converted
+  eventCount: 300         // total number of events tracked
 }
 ```
 
@@ -46,17 +46,17 @@ Adds a variant to your A/B test. You can add and compare as many variants as you
 ``` js
 // first, create some variants
 variantA = {
-	id: 'A',
-	name: 'Alluring Alligators',
-	conversionCount: 1500,
-	eventCount: 3000
+  id: 'A',
+  name: 'Alluring Alligators',
+  conversionCount: 1500,
+  eventCount: 3000
 }
 
 variantB = {
-	id: 'B',
-	name: 'Belligerent Bumblebees',
-	conversionCount: 2500,
-	eventCount: 3000
+  id: 'B',
+  name: 'Belligerent Bumblebees',
+  conversionCount: 2500,
+  eventCount: 3000
 }
 
 // then add the variants to your A/B test
@@ -87,24 +87,24 @@ Returns an object containing:
 ``` js
 // create some variants
 variantC = {
-	id: 'C',
-	name: 'Cranky Capybaras',
-	conversionCount: 5,
-	eventCount: 50
+  id: 'C',
+  name: 'Cranky Capybaras',
+  conversionCount: 5,
+  eventCount: 50
 };
 
 variantD = {
-	id: 'D',
-	name: 'Diligent Ducklings',
-	conversionCount: 60,
-	eventCount: 200
+  id: 'D',
+  name: 'Diligent Ducklings',
+  conversionCount: 60,
+  eventCount: 200
 };
 
 variantE = {
-	id: 'E',
-	name: 'Effervescent Elephants',
-	conversionCount: 30,
-	eventCount: 40
+  id: 'E',
+  name: 'Effervescent Elephants',
+  conversionCount: 30,
+  eventCount: 40
 };
 
 
@@ -119,13 +119,13 @@ result = myConfidence.getResult();
 
 /*
 {
-	hasWinner: false,
-	hasEnoughData: false,
-	winnerID: null,
-	winnerName: null,
-	confidenceInterval: null,
-	readable: 'There is not enough data to determine
-		a conclusive result.'
+  hasWinner: false,
+  hasEnoughData: false,
+  winnerID: null,
+  winnerName: null,
+  confidenceInterval: null,
+  readable: 'There is not enough data to determine
+    a conclusive result.'
 }
 */
 ```
@@ -135,17 +135,17 @@ result = myConfidence.getResult();
 ``` js
 // create some variants
 variantF = {
-	id: 'F',
-	name: 'Freaky Flamingos',
-	conversionCount: 1501,
-	eventCount: 3000
+  id: 'F',
+  name: 'Freaky Flamingos',
+  conversionCount: 1501,
+  eventCount: 3000
 };
 
 variantG = {
-	id: 'G',
-	name: 'Gregarious Gorillas',
-	conversionCount: 1500,
-	eventCount: 3000
+  id: 'G',
+  name: 'Gregarious Gorillas',
+  conversionCount: 1500,
+  eventCount: 3000
 };
 
 // add the variants to your A/B test
@@ -157,12 +157,12 @@ result = myConfidence.getResult();
 
 /*
 {
-	hasWinner: false,
-	hasEnoughData: true,
-	winnerID: null,
-	winnerName: null,
-	confidenceInterval: null,
-	readable: 'There is no winner, the results are too close.'
+  hasWinner: false,
+  hasEnoughData: true,
+  winnerID: null,
+  winnerName: null,
+  confidenceInterval: null,
+  readable: 'There is no winner, the results are too close.'
 }
 */
 ```
@@ -172,17 +172,17 @@ result = myConfidence.getResult();
 ``` js
 // create some variants
 variantH = {
-	id: 'H',
-	name: 'Hungry Hippopotami',
-	conversionCount: 2500,
-	eventCount: 3000
+  id: 'H',
+  name: 'Hungry Hippopotami',
+  conversionCount: 2500,
+  eventCount: 3000
 };
 
 variantI = {
-	id: 'I',
-	name: 'Irritable Iguanas',
-	conversionCount: 1500,
-	eventCount: 3000
+  id: 'I',
+  name: 'Irritable Iguanas',
+  conversionCount: 1500,
+  eventCount: 3000
 };
 
 // add the variants to your A/B test
@@ -194,14 +194,14 @@ result = myConfidence.getResult();
 
 /*
 {
-	hasWinner: true,
-	hasEnoughData: true,
-	winnerID: 'H',
-	winnerName: 'Hungry Hippopotami',
-	confidenceInterval: { min: 82, max: 84.67 },
-	readable: 'With 95% confidence, the true population
-		parameter of the "Hungry Hippopotami" variant will
-		fall between 82% and 84.67%.'
+  hasWinner: true,
+  hasEnoughData: true,
+  winnerID: 'H',
+  winnerName: 'Hungry Hippopotami',
+  confidenceInterval: { min: 82, max: 84.67 },
+  readable: 'With 95% confidence, the true population
+    parameter of the "Hungry Hippopotami" variant will
+    fall between 82% and 84.67%.'
 }
 */
 ```
