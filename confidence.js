@@ -1,4 +1,3 @@
-// if the module has no dependencies, the above pattern can be simplified to
 (function (root, factory) {
 	if (typeof define === 'function' && define.amd) {
 		// AMD. Register as an anonymous module.
@@ -16,15 +15,18 @@
 	/** Private Constants */
 	var DEFAULT_Z_SCORE = 1.96;
 	var DEFAULT_MARGIN_OF_ERROR = 0.01;
+	var VERSION = '1.1.0';
 
-	var Confidence = function() {
-		settings = { };
-
-		this._zScore = DEFAULT_Z_SCORE;
-		this._marginOfError = DEFAULT_MARGIN_OF_ERROR;
+	var Confidence = function(settings) {
+	  settings = settings || { };
+    
+		this._zScore = settings.zScore || DEFAULT_Z_SCORE;
+		this._marginOfError = settings.marginOfError || DEFAULT_MARGIN_OF_ERROR;
 		this._variants = { };
 		this._confidenceIntervals = { };
 	};
+	
+	Confidence.version = VERSION;
 
 	/** Public Constants **/
 
@@ -256,7 +258,7 @@
 		var rate = this.getRate(variantID);
 
 		//Check total Count - if event count is 0
-		var standardError = Math.sqrt(rate*(1-rate)/variant.eventCount);
+		var standardError = Math.sqrt(rate * (1 - rate) / variant.eventCount);
 		return standardError;
 	};
 	return Confidence;
