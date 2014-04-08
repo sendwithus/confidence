@@ -230,7 +230,7 @@
   // Gets Confidence percentage from the configured zscore
   Confidence.prototype.getConfidencePercent = function() {
     var normalProbability = zScoreProbability(this._zScore);
-    return Math.round(100 * (2 * normalProbability - 1));
+    return (100 * (2 * normalProbability - 1)).toFixed(2);
   }
 
   // Are these result statistically significant?
