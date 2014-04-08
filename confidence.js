@@ -32,14 +32,16 @@
 
   Confidence.prototype.addVariant = function(variant) {
     // TODO verify variant first
-    // variant must have properties name, conversionCount, eventCount
+    // variant must have properties conversionCount, eventCount
     if (variant.hasOwnProperty('id') &&
-      variant.hasOwnProperty('name') &&
       variant.hasOwnProperty('conversionCount') &&
       variant.hasOwnProperty('eventCount')) {
+      if(!variant.hasOwnProperty('name')) {
+        variant['name'] = 'Variant ' + variant.id;
+      }
       this._variants[variant.id] = variant;
     } else {
-      throw new Error('variant object needs name, conversionCount, and eventCount properties');
+      throw new Error('variant object needs conversionCount and eventCount properties');
     }
   };
 
