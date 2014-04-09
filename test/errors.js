@@ -34,6 +34,24 @@ module.exports['Add Variant'] = {
 
     test.done();
   },
+
+  'Variant with no given name adds successfully': function(test) {
+    confidence = new Confidence();
+    test.ok(confidence);
+
+    confidence.addVariant({
+      id: 'C',
+      conversionCount: 3000,
+      eventCount: 3000
+    });
+
+    var variantID = 'C';
+
+    test.ok(confidence._variants.hasOwnProperty('C'));
+    test.equal(confidence._variants[variantID].name, 'Variant C', 'The name should be Variant C');
+
+    test.done();
+  },
 };
 
 //**************************************************************************//
@@ -144,6 +162,7 @@ module.exports['Get Result'] = {
     test.equal(result.hasEnoughData, false, 'There should not be enough data');
     test.equal(result.winnerID, null, 'There should be no winnerID');
     test.equal(result.winnerName, null, 'There should be no winnerName');
+    test.equal(result.confidencePercent, null, 'There should be no confidence percent');
     test.equal(result.confidenceInterval, null, 'There should be no confidence interval');
     test.equal(result.readable, 'There is not enough data to determine a conclusive result.', 'There should not be enough data to determine result');
 
@@ -162,6 +181,7 @@ module.exports['Get Result'] = {
     test.equal(result.hasEnoughData, false, 'There should not be enough data');
     test.equal(result.winnerID, null, 'There should be no winnerID');
     test.equal(result.winnerName, null, 'There should be no winnerName');
+    test.equal(result.confidencePercent, null, 'There should be no confidence percent');
     test.equal(result.confidenceInterval, null, 'There should be no confidence interval');
     test.equal(result.readable, 'There is not enough data to determine a conclusive result.', 'There should not be enough data to determine result');
 
@@ -188,6 +208,7 @@ module.exports['Get Result'] = {
     test.equal(result.hasEnoughData, false, 'There should not be enough data');
     test.equal(result.winnerID, null, 'There should be no winnerID');
     test.equal(result.winnerName, null, 'There should be no winnerName');
+    test.equal(result.confidencePercent, null, 'There should be no confidence percent');
     test.equal(result.confidenceInterval, null, 'There should be no confidence interval');
     test.equal(result.readable, 'There is not enough data to determine a conclusive result.', 'There should not be enough data to determine result');
 
@@ -205,6 +226,7 @@ module.exports['Get Result'] = {
     test.equal(result.hasEnoughData, false, 'There should not be enough data');
     test.equal(result.winnerID, null, 'There should be no winnerID');
     test.equal(result.winnerName, null, 'There should be no winnerName');
+    test.equal(result.confidencePercent, null, 'There should be no confidence percent');
     test.equal(result.confidenceInterval, null, 'There should be no confidence interval');
     test.equal(result.readable, 'There is not enough data to determine a conclusive result.', 'There should not be enough data to determine result');
 
@@ -234,6 +256,7 @@ module.exports['Get Result'] = {
     test.equal(result.hasEnoughData, true, 'There should be enough data');
     test.equal(result.winnerID, null, 'There should be no winnerID');
     test.equal(result.winnerName, null, 'There should be no winnerName');
+    test.equal(result.confidencePercent, 95.00, 'Confidence percent should be 95.00');
     test.equal(result.confidenceInterval, null, 'No confidence interval');
     test.equal(result.readable, 'There is no winner, the results are too close.', 'Enough data, but no conclusive result');
 
@@ -267,6 +290,7 @@ module.exports['Get Result'] = {
     test.equal(result.hasEnoughData, true, 'There should be enough data');
     test.equal(result.winnerID, 'A', 'A should be the winnerID');
     test.equal(result.winnerName, 'Variant A', 'Variant A should be the winnerName');
+    test.equal(result.confidencePercent, 95.00, 'Confidence percent should be 95.00');
     test.deepEqual(result.confidenceInterval, {
       min: 23.88,
       max: 26.92
@@ -315,6 +339,7 @@ module.exports['Analyze Confidence Intervals'] = {
     test.equal(result.hasEnoughData, true, 'There should be enough data');
     test.equal(result.winnerID, null, 'There should be no winnerID');
     test.equal(result.winnerName, null, 'There should be no winnerName');
+    test.equal(result.confidencePercent, 95.00, 'Confidence percent should be 95.00');
     test.equal(result.confidenceInterval, null, 'No confidence interval');
     test.equal(result.readable, 'There is no winner, the results are too close.', 'Enough data, but no conclusive result');
 
@@ -354,6 +379,7 @@ module.exports['Analyze Confidence Intervals'] = {
     test.equal(result.hasEnoughData, true, 'There should be enough data');
     test.equal(result.winnerID, 'B', 'B should be the winnerID');
     test.equal(result.winnerName, 'Variant B', 'Variant B should be the winnerName');
+    test.equal(result.confidencePercent, 95.00, 'Confidence percent should be 95.00');
     test.deepEqual(result.confidenceInterval, {
       min: 82,
       max: 84.67
@@ -632,16 +658,16 @@ module.exports['zScore Probability'] = {
     var result = confidence.getResult();
 
     var expectedResult = 'With 100.00% confidence, the true population parameter of the';
-    expectedResult += ' "Variant B" variant will fall between 99.93% and 100.05%.';
+    expectedResult += ' "Variant B" variant will fall between 99.93% and 100%.';
 
     test.equal(result.hasWinner, true, 'There should be a winner');
     test.equal(result.hasEnoughData, true, 'There should be enough data');
     test.equal(result.winnerID, 'B', 'B should be the winnerID');
     test.equal(result.winnerName, 'Variant B', 'Variant B should be the winnerName');
-    test.equal(result.confidencePercent, 100.00, 'CI should be 100');
+    test.equal(result.confidencePercent, 100.00, 'Confidence percent should be 100');
     test.deepEqual(result.confidenceInterval, {
       min: 99.93,
-      max: 100.05
+      max: 100
     }, 'Confidence interval should not overlap');
     test.equal(result.readable, expectedResult , 'The result should have the long winning speech');
 

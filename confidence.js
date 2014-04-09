@@ -63,7 +63,6 @@
   /** Public Constants **/
 
   Confidence.prototype.addVariant = function(variant) {
-    // TODO verify variant first
     // variant must have properties conversionCount, eventCount
     if (variant.hasOwnProperty('id') &&
       variant.hasOwnProperty('conversionCount') &&
@@ -118,6 +117,7 @@
             hasEnoughData: hasEnoughData,
             winnerID: null,
             winnerName: null,
+            confidencePercent: null,
             confidenceInterval: null,
             readable: "There is not enough data to determine a conclusive result."
           };
@@ -139,7 +139,6 @@
   };
 
   Confidence.prototype.analyzeConfidenceIntervals = function(confidenceIntervals) {
-    // TODO if confidence interval bad format, throw an error
 
     var minimums = [];
     var maximums = [];
@@ -284,9 +283,15 @@
     var standardError = this.getStandardError(variantID);
     //lower limit
     var min = rate - (this._zScore * standardError);
+    if (min < 0) {
+      min = 0.00;
+    }
     //upper limit
     var max = rate + (this._zScore * standardError);
 
+    if (max > 1) {
+      max = 1.00;
+    }
     confidenceInterval = { min: min, max: max };
 
     return confidenceInterval;

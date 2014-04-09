@@ -123,9 +123,9 @@ result = myConfidence.getResult();
   hasEnoughData: false,
   winnerID: null,
   winnerName: null,
+  confidencePercent: null,
   confidenceInterval: null,
-  readable: 'There is not enough data to determine
-    a conclusive result.'
+  readable: 'There is not enough data to determine a conclusive result.'
 }
 */
 ```
@@ -161,6 +161,7 @@ result = myConfidence.getResult();
   hasEnoughData: true,
   winnerID: null,
   winnerName: null,
+  confidencePercent: 95.00,
   confidenceInterval: null,
   readable: 'There is no winner, the results are too close.'
 }
@@ -198,6 +199,7 @@ result = myConfidence.getResult();
   hasEnoughData: true,
   winnerID: 'H',
   winnerName: 'Hungry Hippopotami',
+  confidencePercent: 95.00,
   confidenceInterval: { min: 82, max: 84.67 },
   readable: 'With 95% confidence, the true population
     parameter of the "Hungry Hippopotami" variant will
@@ -213,11 +215,8 @@ npm install
 npm test
 ```
 ## TODO
-- variant `name` parameter optional
- - requires changes to `addVariant`, and `errors.js`
- - add "not provided" default name if left blank
 - add `removeVariant` function
-- zscore table lookup to provide more accurate results if 95% confidence is not available
+- implement "Confidence to beat baseline" comparison - in progress!
 
 ## Issues and Questions
 
