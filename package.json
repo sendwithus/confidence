@@ -1,11 +1,12 @@
 {
   "name": "Confidence",
-  "version": "0.0.0",
-  "description": "",
+  "version": "1.1.3",
+  "description": "A light-weight JavaScript library to help you make sense of your A/B test results.",
   "scripts": {
     "test": "node test/run.js"
   },
-  "author": "",
+  "author": "Jessica Thomas <jessica@sendwithus.com>",
+  "repository": "https://github.com/sendwithus/confidence",
   "license": "BSD-2-Clause",
   "devDependencies": {
   	"nodeunit": "latest"
