@@ -638,7 +638,7 @@ module.exports['zScore Probability'] = {
     test.equal(result.hasEnoughData, true, 'There should be enough data');
     test.equal(result.winnerID, 'B', 'B should be the winnerID');
     test.equal(result.winnerName, 'Variant B', 'Variant B should be the winnerName');
-    test.equal(result.confidencePercent, 100.00, 'CI should be 100'),
+    test.equal(result.confidencePercent, 100.00, 'CI should be 100');
     test.deepEqual(result.confidenceInterval, {
       min: 99.93,
       max: 100.05
