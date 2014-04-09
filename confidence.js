@@ -117,6 +117,7 @@
             hasEnoughData: hasEnoughData,
             winnerID: null,
             winnerName: null,
+            confidencePercent: null,
             confidenceInterval: null,
             readable: "There is not enough data to determine a conclusive result."
           };

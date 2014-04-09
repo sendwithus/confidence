@@ -123,9 +123,9 @@ result = myConfidence.getResult();
   hasEnoughData: false,
   winnerID: null,
   winnerName: null,
+  confidencePercent: null,
   confidenceInterval: null,
-  readable: 'There is not enough data to determine
-    a conclusive result.'
+  readable: 'There is not enough data to determine a conclusive result.'
 }
 */
 ```
@@ -161,6 +161,7 @@ result = myConfidence.getResult();
   hasEnoughData: true,
   winnerID: null,
   winnerName: null,
+  confidencePercent: 95.00,
   confidenceInterval: null,
   readable: 'There is no winner, the results are too close.'
 }
@@ -198,6 +199,7 @@ result = myConfidence.getResult();
   hasEnoughData: true,
   winnerID: 'H',
   winnerName: 'Hungry Hippopotami',
+  confidencePercent: 95.00,
   confidenceInterval: { min: 82, max: 84.67 },
   readable: 'With 95% confidence, the true population
     parameter of the "Hungry Hippopotami" variant will
