@@ -215,11 +215,8 @@ npm install
 npm test
 ```
 ## TODO
-- variant `name` parameter optional
- - requires changes to `addVariant`, and `errors.js`
- - add "not provided" default name if left blank
 - add `removeVariant` function
-- zscore table lookup to provide more accurate results if 95% confidence is not available
+- implement "Confidence to beat baseline" comparison - in progress!
 
 ## Issues and Questions
 
