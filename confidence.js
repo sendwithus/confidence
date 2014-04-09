@@ -19,15 +19,23 @@
 
   var Confidence = function(settings) {
     settings = settings || { };
-    
-    this._zScore = settings.zScore || DEFAULT_Z_SCORE;
-    this._marginOfError = settings.marginOfError || DEFAULT_MARGIN_OF_ERROR;
+
+    this._zScore = settings.hasOwnProperty('zScore') ? settings.zScore : DEFAULT_Z_SCORE;
+    this._marginOfError = settings.hasOwnProperty('marginOfError') ? settings.marginOfError : DEFAULT_MARGIN_OF_ERROR;
     this._variants = { };
     this._confidenceIntervals = { };
   };
-  
+
+  // Updates the API version number
   Confidence.version = VERSION;
-  
+
+  /*
+  Given a z-score, this function returns a polynomial approximation of the corresponding confidence-level.
+
+  Adapted from:
+  Ibbetson D, Algorithm 209
+  Collected Algorithms of the CACM 1963 p. 616
+  */
   var Z_MAX = 6;
   var zScoreProbability = function(z) {
     var w, x, y;
@@ -50,7 +58,7 @@
     } else {
       return (1 - x) / 2.0;
     }
-  }
+  };
 
   /** Public Constants **/
 
@@ -166,9 +174,9 @@
     // identify ID with the largest max and its value
     var idWithLargestMax = maximums[0].id;
     var largestMax = maximums[0].val;
-    
+
     var confidencePercent = this.getConfidencePercent();
-    
+
     var result;
 
     var hasWinner;
@@ -231,7 +239,7 @@
   Confidence.prototype.getConfidencePercent = function() {
     var normalProbability = zScoreProbability(this._zScore);
     return (100 * (2 * normalProbability - 1)).toFixed(2);
-  }
+  };
 
   // Are these result statistically significant?
   // (zscore^2 * stdErr * (1 - stdErr)) / marginErr^2

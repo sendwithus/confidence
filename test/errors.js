@@ -2,8 +2,6 @@ var Confidence = require('../confidence.js');
 
 //**************************************************************************//
 
-// TODO:  Change error messages to say what the test /should/ do instead of what it does.
-
 module.exports['Add Variant'] = {
 
   // Verifies that the total count cannot be zero.
@@ -262,7 +260,7 @@ module.exports['Get Result'] = {
 
     var result = confidence.getResult();
 
-    var expectedResult = 'With 95% confidence, the true population parameter of the';
+    var expectedResult = 'With 95.00% confidence, the true population parameter of the';
     expectedResult += ' "Variant A" variant will fall between 23.88% and 26.92%.';
 
     test.equal(result.hasWinner, true, 'There should be a winner');
@@ -347,7 +345,7 @@ module.exports['Analyze Confidence Intervals'] = {
 
     confidenceIntervals['B'] = { min: 0.8199972225115139, max: 0.8466694441551529 };
 
-    var messageWinner = 'With 95% confidence, the true population parameter of the';
+    var messageWinner = 'With 95.00% confidence, the true population parameter of the';
     messageWinner += ' "Variant B" variant will fall between 82% and 84.67%.';
 
     var result = confidence.analyzeConfidenceIntervals(confidenceIntervals);
@@ -540,7 +538,7 @@ module.exports['Get Confidence Interval'] = {
 
     test.deepEqual(confidence.getConfidenceInterval('B'), { min: 1, max: 1 }, 'Rate is 1, interval should be [1, 1]');
 
-    // Something in between will be something in between (que sera sera)?
+    // Something in between will be something in between...
     confidence.addVariant({
       id: 'C',
       name: 'Variant C',
@@ -608,3 +606,45 @@ module.exports['Get Standard Error'] = {
   },
 };
 
+//**************************************************************************//
+
+module.exports['zScore Probability'] = {
+
+  // Verifies zscore of 6.0 (maximum meaningful zscore) produces 100% confidence result.
+  'Maximum meaningful zScore': function(test) {
+
+    var confidence = new Confidence({zScore: 6});
+
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 500,
+      eventCount: 10000
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 9999,
+      eventCount: 10000
+    });
+
+    var result = confidence.getResult();
+
+    var expectedResult = 'With 100.00% confidence, the true population parameter of the';
+    expectedResult += ' "Variant B" variant will fall between 99.93% and 100.05%.';
+
+    test.equal(result.hasWinner, true, 'There should be a winner');
+    test.equal(result.hasEnoughData, true, 'There should be enough data');
+    test.equal(result.winnerID, 'B', 'B should be the winnerID');
+    test.equal(result.winnerName, 'Variant B', 'Variant B should be the winnerName');
+    test.equal(result.confidencePercent, 100.00, 'CI should be 100')
+    // test.deepEqual(result.confidenceInterval, {
+    //   min: 23.88,
+    //   max: 26.92
+    // }, 'Confidence interval should not overlap');
+    test.equal(result.readable, expectedResult , 'The result should have the long winning speech');
+
+    test.done();
+  },
+};
