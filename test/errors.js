@@ -637,7 +637,8 @@ module.exports['Get Standard Error'] = {
 module.exports['zScore Probability'] = {
 
   // Verifies zscore of 6.0 (maximum meaningful zscore) produces 100% confidence result.
-  'Maximum meaningful zScore': function(test) {
+  // Also verifies that max confidence interval does not exceed 100%
+  'Test max meaningful zScore and confidence interval max <= 100%': function(test) {
 
     var confidence = new Confidence({zScore: 6});
 
@@ -673,4 +674,57 @@ module.exports['zScore Probability'] = {
 
     test.done();
   },
+
+ // zscore of 1.28 should result in 79.95% confidence
+  'zScore of 1.28 produces ~80% confidence': function(test) {
+
+    var confidence = new Confidence({zScore: 1.28});
+
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 500,
+      eventCount: 10000
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 9999,
+      eventCount: 10000
+    });
+
+    var result = confidence.getResult();
+
+    test.equal(result.confidencePercent, 79.95, 'Confidence percent should be 79.95');
+
+    test.done();
+  },
+
+ // zscore of 1.645 should result in 90% confidence
+  'zScore of 1.645 produces 90% confidence': function(test) {
+
+    var confidence = new Confidence({zScore: 1.645});
+
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 500,
+      eventCount: 10000
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 9999,
+      eventCount: 10000
+    });
+
+    var result = confidence.getResult();
+
+    test.equal(result.confidencePercent, 90.00, 'Confidence percent should be 90.00');
+
+    test.done();
+  },
+
 };
