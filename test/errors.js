@@ -1,6 +1,8 @@
 var Confidence = require('../confidence.js');
 
 //**************************************************************************//
+// Z-TEST TO GET A/B TEST WINNER
+//**************************************************************************//
 
 module.exports['Add Variant'] = {
 
@@ -633,6 +635,8 @@ module.exports['Get Standard Error'] = {
 };
 
 //**************************************************************************//
+// ZSCORE TO PERCENT
+//**************************************************************************//
 
 module.exports['zScore Probability'] = {
 
@@ -727,4 +731,214 @@ module.exports['zScore Probability'] = {
     test.done();
   },
 
+};
+
+//**************************************************************************//
+// CONFIDENCE TO BEAT BASELINE
+//**************************************************************************//
+
+module.exports['Get Pooled Total'] = {
+  'Error if sample size is zero': function(test) {
+    var confidence = new Confidence();
+
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 50,
+      eventCount: 0
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 40,
+      eventCount: 0
+    });
+
+    test.throws(function() {
+      confidence.getPooledTotal('A', 'B');
+    }, Error, 'You must have a larger sample size.');
+    test.done();
+  },
+};
+
+//**************************************************************************//
+
+module.exports['Get Pooled Rate'] = {
+  '0 if total conversions are 0': function(test) {
+    var confidence = new Confidence();
+
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 0,
+      eventCount: 1000
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 0,
+      eventCount: 1000
+    });
+
+    var pooledRate = confidence.getPooledRate('A', 'B');
+
+    test.equal(pooledRate, 0, 'Pooled rate should be zero if there are no conversions.')
+    test.done();
+  },
+
+  'Error if pooled total is zero': function(test) {
+    var confidence = new Confidence();
+
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 50,
+      eventCount: 0
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 40,
+      eventCount: 0
+    });
+
+    test.throws(function() {
+      confidence.getPooledRate('A', 'B');
+    }, Error, 'You must have a larger sample size.');
+    test.done();
+  },
+};
+
+//**************************************************************************//
+
+module.exports['Get Pooled Standard Error'] = {
+  '0 if pooled rate is 0': function(test) {
+    var confidence = new Confidence();
+
+    var pooledRate = 0.0;
+    var pooledTotal = 1000;
+
+    var result = confidence.getPooledStandardError(pooledRate, pooledTotal);
+
+    test.equal(result, 0, 'Pooled Standard Error should be 0 if pooled rate is 1');
+    test.done();
+  },
+
+  '0 if pooled rate is 1': function(test) {
+    var confidence = new Confidence();
+
+    var pooledRate = 1.0;
+    var pooledTotal = 1000;
+
+    var result = confidence.getPooledStandardError(pooledRate, pooledTotal);
+
+    test.equal(result, 0, 'Pooled Standard Error should be 0 if pooled rate is 1');
+    test.done();
+  },
+  'Error if pooled total is 0': function(test) {
+    var confidence = new Confidence();
+
+    var pooledRate = 50;
+    var pooledTotal = 0.0;
+
+    test.throws(function() {
+      confidence.getPooledStandardError(pooledRate, pooledTotal);
+    }, Error, 'You must have a larger sample size.');
+    test.done();
+  },
+
+};
+
+//**************************************************************************//
+// CHI-SQUARED AND MARASCUILO'S PROCEDURE
+//**************************************************************************//
+
+module.exports['Get Marascuilo Result'] = {
+  'Not enough data (expected value < 5)': function(test) {
+    var confidence = new Confidence();
+
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 1,
+      eventCount: 5
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 2,
+      eventCount: 3
+    });
+
+    var result = confidence.getMarascuiloResult();
+
+    test.equal(result.hasWinner, false, 'There should not be a winner');
+    test.equal(result.hasEnoughData, false, 'There should not be enough data');
+    test.equal(result.winnerID, null, 'There should be no winnerID');
+    test.equal(result.winnerName, null, 'There should be no winnerName');
+
+    test.done();
+  },
+  'Enough data no result (small variance among variants)': function(test) {
+    var confidence = new Confidence();
+
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 66,
+      eventCount: 100
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 67,
+      eventCount: 110
+    });
+
+    var result = confidence.getMarascuiloResult();
+
+    test.equal(result.hasWinner, false, 'There should not be a winner');
+    test.equal(result.hasEnoughData, true, 'There should be enough data');
+    test.equal(result.winnerID, null, 'There should be no winnerID');
+    test.equal(result.winnerName, null, 'There should be no winnerName');
+
+    test.done();
+  },
+  'Enough data no result (large variance, tie for winner)': function(test) {
+    var confidence = new Confidence();
+
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 80,
+      eventCount: 100
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 80,
+      eventCount: 100
+    });
+    confidence.addVariant({
+      id: 'C',
+      name: 'Variant C',
+      conversionCount: 6,
+      eventCount: 100
+    });
+
+    var result = confidence.getMarascuiloResult();
+
+    test.equal(result.hasWinner, false, 'There should not be a winner');
+    test.equal(result.hasEnoughData, true, 'There should be enough data');
+    test.equal(result.winnerID, null, 'There should be no winnerID');
+    test.equal(result.winnerName, null, 'There should be no winnerName');
+
+    test.done();
+  },
 };
