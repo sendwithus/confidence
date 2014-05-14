@@ -331,7 +331,7 @@
       result = {
         hasWinner: true,
         hasEnoughData: true,
-        winnerID: parseInt(idWithLargestMin, 10),
+        winnerID: idWithLargestMin,
         winnerName: winningVariantName,
         confidencePercent: confidencePercent,
         confidenceInterval: { min: roundedMin, max: roundedMax },
@@ -380,8 +380,6 @@
     var denominator = Math.pow(this._marginOfError, 2);
 
     var requiredSampleSize = Math.max((numerator/denominator), 100);
-
-    console.log(requiredSampleSize);
     return requiredSampleSize;
   };
 
@@ -476,8 +474,6 @@ CONFIDENCE TO BEAT BASELINE
 
     // If the variant is the baseline, put -- in its place.
     }
-
-    console.log(result);
   };
 
   /*
@@ -496,17 +492,11 @@ CONFIDENCE TO BEAT BASELINE
     // Calculate pooled standard error
     var pooledStandardError = this.getPooledStandardError(pooledRate, pooledTotal);
 
-    console.log('pooled stdErr:', pooledStandardError);
-
     // Calculate zScore
     var zScore = this.getZScore(baselineID, variantID, pooledStandardError);
 
-    console.log('compareBaseline zScore:', zScore);
-
     // getConfidencePercent
     var confidencePercent = this.getConfidencePercent(zScore);
-
-    console.log('compareBaseline confidencePercent:', confidencePercent);
 
     return confidencePercent;
   };
@@ -806,10 +796,10 @@ Confidence.prototype.marascuilo = function(bestVariantID, critChi) {
 // test stat:
 // | pi - pj |
 Confidence.prototype.computeTestStatistic = function(bestVariantID, challengerVariantID) {
-  var bestVariantConversions = this._variants[bestVariantID].conversionCount;
-  var challengerVariantConversions = this._variants[challengerVariantID].conversionCount;
+  var bestVariantRate = this.getRate(bestVariantID);
+  var challengerVariantRate = this.getRate(challengerVariantID);
 
-  var testStatistic = Math.abs(bestVariantConversions - challengerVariantConversions);
+  var testStatistic = Math.abs(bestVariantRate - challengerVariantRate);
 
   return testStatistic;
 };
@@ -829,7 +819,7 @@ Confidence.prototype.computeCriticalValue = function(bestVariantID, challengerVa
   var bestVariantPart = (bestVariantRate * (1 - bestVariantRate)) / bestVariantTotal;
   var challengerVariantPart = (challengerVariantRate * (1 - challengerVariantRate)) / challengerVariantTotal;
 
-  var criticalValue = critChi * Math.sqrt(bestVariantPart + challengerVariantPart);
+  var criticalValue = Math.sqrt(critChi) * Math.sqrt(bestVariantPart + challengerVariantPart);
 
   return criticalValue;
 };
