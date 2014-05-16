@@ -60,27 +60,133 @@
     }
   };
 
+    var BIGX = 20.0;                  /* max value to represent exp(x) */
+
+    function ex(x) {
+        return (x < -BIGX) ? 0.0 : Math.exp(x);
+    }
+
+  /*  POCHISQ  --  probability of chi-square value
+
+              Adapted from:
+                      Hill, I. D. and Pike, M. C.  Algorithm 299
+                      Collected Algorithms for the CACM 1967 p. 243
+              Updated for rounding errors based on remark in
+                      ACM TOMS June 1985, page 185
+    */
+
+    var pochisq = function(x, df) {
+        var a, y, s;
+        var e, c, z;
+        var even;                     /* True if df is an even number */
+
+        var LOG_SQRT_PI = 0.5723649429247000870717135; /* log(sqrt(pi)) */
+        var I_SQRT_PI = 0.5641895835477562869480795;   /* 1 / sqrt(pi) */
+
+        if (x <= 0.0 || df < 1) {
+            return 1.0;
+        }
+
+        a = 0.5 * x;
+        even = !(df & 1);
+        if (df > 1) {
+            y = ex(-a);
+        }
+        s = (even ? y : (2.0 * zSquareProbability(-Math.sqrt(x))));
+        if (df > 2) {
+            x = 0.5 * (df - 1.0);
+            z = (even ? 1.0 : 0.5);
+            if (a > BIGX) {
+                e = (even ? 0.0 : LOG_SQRT_PI);
+                c = Math.log(a);
+                while (z <= x) {
+                    e = Math.log(z) + e;
+                    s += ex(c * z - a - e);
+                    z += 1.0;
+                }
+                return s;
+            } else {
+                e = (even ? 1.0 : (I_SQRT_PI / Math.sqrt(a)));
+                c = 0.0;
+                while (z <= x) {
+                    e = e * (a / z);
+                    c = c + e;
+                    z += 1.0;
+                }
+                return c * y + s;
+            }
+        } else {
+            return s;
+        }
+    };
+
+    /*  CRITCHI  --  Compute critical chi-square value to
+                     produce given p.  We just do a bisection
+                     search for a value within CHI_EPSILON,
+                     relying on the monotonicity of pochisq().  */
+
+    var critchi = function(p, df) {
+        var CHI_EPSILON = 0.000001;   /* Accuracy of critchi approximation */
+        var CHI_MAX = 99999.0;        /* Maximum chi-square value */
+        var minchisq = 0.0;
+        var maxchisq = CHI_MAX;
+        var chisqval;
+
+        if (p <= 0.0) {
+            return maxchisq;
+        } else {
+            if (p >= 1.0) {
+                return 0.0;
+            }
+        }
+
+        chisqval = df / Math.sqrt(p);    /* fair first value */
+        while ((maxchisq - minchisq) > CHI_EPSILON) {
+            if (pochisq(chisqval, df) < p) {
+                maxchisq = chisqval;
+            } else {
+                minchisq = chisqval;
+            }
+            chisqval = (maxchisq + minchisq) * 0.5;
+        }
+        return chisqval;
+      };
   /** Public Constants **/
 
   Confidence.prototype.addVariant = function(variant) {
-    // variant must have properties conversionCount, eventCount
-    if (variant.hasOwnProperty('id') &&
-      variant.hasOwnProperty('conversionCount') &&
-      variant.hasOwnProperty('eventCount')) {
-      if(!variant.hasOwnProperty('name')) {
-        variant['name'] = 'Variant ' + variant.id;
-      }
-      this._variants[variant.id] = variant;
+    // check if variant ID already exists
+    if (this.variantExists(variant.id)) {
+      var message = 'A variant with ID \'' + variant.id + '\' already exists.';
+      throw new Error (message);
     } else {
-      throw new Error('variant object needs conversionCount and eventCount properties');
+      // add the variant!
+      // variant must have properties conversionCount, eventCount
+      if (variant.hasOwnProperty('id') &&
+        variant.hasOwnProperty('conversionCount') &&
+        variant.hasOwnProperty('eventCount')) {
+        if(!variant.hasOwnProperty('name')) {
+          variant['name'] = 'Variant ' + variant.id;
+        }
+        this._variants[variant.id] = variant;
+      } else {
+        throw new Error('variant object needs conversionCount and eventCount properties');
+      }
     }
   };
 
   Confidence.prototype.getVariant = function(variantID) {
-    if (this._variants.hasOwnProperty(variantID)) {
+    if (this.variantExists(variantID)) {
       return this._variants[variantID];
     } else {
       throw new Error('The variant you requested does not exist.');
+    }
+  };
+
+  Confidence.prototype.variantExists = function(variantID) {
+    if (this._variants.hasOwnProperty(variantID)) {
+      return true;
+    } else {
+      return false;
     }
   };
 
@@ -194,12 +300,10 @@
       message += winningVariantName + "\" variant will fall between ";
       message += roundedMin + "% and ";
       message += roundedMax + "%.";
-      hasWinner = true;
-      hasEnoughData = true;
 
       result = {
-        hasWinner: hasWinner,
-        hasEnoughData: hasEnoughData,
+        hasWinner: true,
+        hasEnoughData: true,
         winnerID: idWithLargestMin,
         winnerName: winningVariantName,
         confidencePercent: confidencePercent,
@@ -211,12 +315,9 @@
       // otherwise, there is no winner
       var messageNoWinner = "There is no winner, the results are too close.";
 
-      hasWinner = false;
-      hasEnoughData = true;
-
       result = {
-        hasWinner: hasWinner,
-        hasEnoughData: hasEnoughData,
+        hasWinner: false,
+        hasEnoughData: true,
         winnerID: null,
         winnerName: null,
         confidencePercent: confidencePercent,
@@ -237,8 +338,10 @@
   };
 
   // Gets Confidence percentage from the configured zscore
-  Confidence.prototype.getConfidencePercent = function() {
-    var normalProbability = zScoreProbability(this._zScore);
+  Confidence.prototype.getConfidencePercent = function(zScore) {
+    zScore = typeof zScore === 'number' ? zScore : this._zScore;
+
+    var normalProbability = zScoreProbability(zScore);
     return (100 * (2 * normalProbability - 1)).toFixed(2);
   };
 
@@ -309,5 +412,276 @@
     var standardError = Math.sqrt(rate * (1 - rate) / variant.eventCount);
     return standardError;
   };
+
+//**************************************************************************//
+// CHI-SQUARED AND MARASCUILO'S PROCEDURE
+//**************************************************************************//
+
+Confidence.prototype.getMarascuiloResult = function() {
+  var result;
+
+  // Calculate observed and expected values.
+  // If any of the expected values < 5 there is not enough data.
+  var observedValues = this.getObservedValues();
+  var pooledProportion = this.getPooledProportion(observedValues);
+  var expectedValues = this.getExpectedValues(observedValues, pooledProportion);
+
+  // If any expected value < 5, we do not have enough data
+  if (expectedValues.hasEnoughData === false) {
+    result = {
+      hasWinner: false,
+      hasEnoughData: false,
+      winnerID: null,
+      winnerName: null
+    };
+    return result;
+  }
+
+  // Calculate "Chi Parts".
+  var chiPartValues = this.getChiParts(observedValues, expectedValues);
+  var chiPartSum = this.sumChiParts(chiPartValues);
+
+  // Calculate critical value.
+  var degreesOfFreedom = this.getDegreesOfFreedom();
+  var probability = (1 - zScoreProbability(this._zScore));
+  var critChi = critchi(probability, 2);
+
+  if (chiPartSum > critChi) {
+    // there is a difference, proceed to marascuilo
+    var bestVariant = this.getBestVariant();
+    var result = this.marascuilo(bestVariant, critChi);
+  } else {
+    // Enough data, no winner
+    result = {
+      hasWinner: false,
+      hasEnoughData: true,
+      winnerID: null,
+      winnerName: null
+    };
+    return result;
+  }
+  return result;
+};
+
+// Compute and store observed successes (ie. clickthroughs),
+// failures(total - clickthroughs), and totals for each variant.
+Confidence.prototype.getObservedValues = function() {
+  var observedValues = {};
+  var variants = this._variants;
+
+  for (var variant in variants){
+    var observedStats = {};
+
+    var success = variants[variant].conversionCount;
+    var fail = variants[variant].eventCount - variants[variant].conversionCount;
+    var total = variants[variant].eventCount;
+
+    observedStats['success'] = success;
+    observedStats['fail'] = fail;
+    observedStats['total'] = total;
+
+    observedValues[variant] = observedStats;
+  }
+  return observedValues;
+};
+// Compute pooled proportion p
+//   p = sum of successes / sum of totals
+Confidence.prototype.getPooledProportion = function(observedValues) {
+  var summedSuccesses = 0;
+  var summedTotals = 0;
+
+  // sum the successes across all variants, and
+  // sum the totals across all variants
+  for (var variant in observedValues){
+    summedSuccesses += observedValues[variant].success;
+    summedTotals += observedValues[variant].total;
+  }
+
+  if (summedTotals === 0) {
+    throw new Error('Summed total is zero: cannot divide by zero to produce rate.');
+  } else {
+    var result = summedSuccesses / summedTotals;
+    return result;
+  }
+};
+
+// Compute and store expected successes and failures.
+// For each expected success:
+//   E@i = p*total@i
+// For each expected failure:
+//   E@i = (1-p)*total@i
+Confidence.prototype.getExpectedValues = function(observedValues, pooledProportion) {
+
+  var expectedValues = {};
+
+  for (var variant in observedValues) {
+    var expectedStats = {};
+    var success;
+    var fail;
+
+    // If any expected count < 5, we don't have enough data.
+    success = pooledProportion * observedValues[variant].total;
+    fail = (1 - pooledProportion) * observedValues[variant].total;
+
+    if (success < 5 || fail < 5) {
+      expectedValues['hasEnoughData'] = false;
+    }
+
+    expectedStats['success'] = success;
+    expectedStats['fail'] = fail;
+
+    expectedValues[variant] = expectedStats;
+  }
+  if (expectedValues['hasEnoughData'] !== false) {
+    expectedValues['hasEnoughData'] = true;
+  }
+  return expectedValues;
+};
+
+// Calculate "Chi Parts".
+// For each cell (where i is the cell):
+//   ChiPart@i = ((ObservedVal@i - ExpectedVal@i) ^ 2) / ExpectedVal@i
+// SHORTCUT THIS? calculate critChi here and check at every step
+Confidence.prototype.getChiParts = function(observedValues, expectedValues) {
+  var chiPartValues = {};
+  var success;
+  var fail;
+
+  for (var variant in observedValues) {
+    var chiPartStats = {};
+
+    // Compute Chi-Part for success
+    var observedSuccess = observedValues[variant].success;
+    var expectedSuccess = expectedValues[variant].success;
+
+    if (expectedSuccess === 0) {
+      throw new Error('Cannot divide by zero to produce chi parts.');
+    } else {
+      success = Math.pow((observedSuccess - expectedSuccess), 2) / expectedSuccess;
+      chiPartStats['success'] = success;
+    }
+
+    // Compute Chi-Part for fail
+    var observedFail = observedValues[variant].fail;
+    var expectedFail = expectedValues[variant].fail;
+
+    if (expectedFail === 0) {
+      throw new Error('Cannot divide by zero to produce chi parts.');
+    } else {
+      fail = Math.pow((observedFail - expectedFail), 2) / expectedFail;
+      chiPartStats['fail'] = fail;
+    }
+
+    chiPartValues[variant] = chiPartStats;
+  }
+
+  return chiPartValues;
+};
+
+// Sum the Chi Parts to get the Chi-Square value.
+Confidence.prototype.sumChiParts = function(chiPartValues) {
+  var chiPartSum = 0;
+
+  for (var variant in chiPartValues) {
+    chiPartSum += chiPartValues[variant].success;
+    chiPartSum += chiPartValues[variant].fail;
+  }
+  return chiPartSum;
+};
+
+// Calculate degrees of freedom.
+//   k - 1 where k is the number of variants
+Confidence.prototype.getDegreesOfFreedom = function() {
+  var len = (Object.keys(this._variants).length) - 1;
+  return len;
+};
+
+// Find the variant with the highest rate
+Confidence.prototype.getBestVariant = function() {
+  var bestRate = 0;
+  var bestVariantID;
+
+  for (var variantID in this._variants) {
+    var rate = this.getRate(variantID);
+    if (rate > bestRate){
+      bestRate = rate;
+      bestVariantID = variantID;
+    }
+  }
+  return bestVariantID;
+};
+
+// Compare the best variant to each other variant.
+// if each test stat is greater than the corresponding critical value,
+// then the best variant is the winner
+// otherwise, there is no winner?
+Confidence.prototype.marascuilo = function(bestVariantID, critChi) {
+  var result;
+
+  // TODO if there is only one variant there needs to be a check somewhere because this will probably mess up.
+  // This is where the z-test messed up... right?
+  for (var variantID in this._variants) {
+    if (variantID === bestVariantID) {
+      continue;
+    } else {
+      // Compare the successes of the best variantID
+      var testStatistic = this.computeTestStatistic(bestVariantID, variantID);
+      var criticalValue = this.computeCriticalValue(bestVariantID, variantID, critChi);
+
+      if (testStatistic > criticalValue) {
+        // keep goin', doin' fine, calculate the next one
+        continue;
+      } else {
+        // There is enough data, but no winner.
+        result = {
+          hasWinner: false,
+          hasEnoughData: true,
+          winnerID: null,
+          winnerName: null
+        };
+        return result;
+      }
+    }
+  }
+  // There is enough data and there is a winner.
+  result = {
+    hasWinner: true,
+    hasEnoughData: true,
+    winnerID: bestVariantID,
+    winnerName: this._variants[bestVariantID]['name']
+  };
+  return result;
+};
+
+// test stat:
+// | pi - pj |
+Confidence.prototype.computeTestStatistic = function(bestVariantID, challengerVariantID) {
+  var bestVariantRate = this.getRate(bestVariantID);
+  var challengerVariantRate = this.getRate(challengerVariantID);
+
+  var testStatistic = Math.abs(bestVariantRate - challengerVariantRate);
+
+  return testStatistic;
+};
+
+// critical value:
+// critChi * (sqrt((pi(1 - pi) / ni) + (pj(1 - pj) / nj))
+Confidence.prototype.computeCriticalValue = function(bestVariantID, challengerVariantID, critChi) {
+
+  // rates
+  var bestVariantRate = this.getRate(bestVariantID);
+  var challengerVariantRate = this.getRate(challengerVariantID);
+
+  // totals
+  var bestVariantTotal = this._variants[bestVariantID].eventCount;
+  var challengerVariantTotal = this._variants[challengerVariantID].eventCount;
+
+  var bestVariantPart = (bestVariantRate * (1 - bestVariantRate)) / bestVariantTotal;
+  var challengerVariantPart = (challengerVariantRate * (1 - challengerVariantRate)) / challengerVariantTotal;
+
+  var criticalValue = Math.sqrt(critChi) * Math.sqrt(bestVariantPart + challengerVariantPart);
+
+  return criticalValue;
+};
   return Confidence;
 }));
