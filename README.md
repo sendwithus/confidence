@@ -103,21 +103,21 @@ variantC = {
   id: 'C',
   name: 'Cranky Capybaras',
   conversionCount: 5,
-  eventCount: 50
+  eventCount: 25
 };
 
 variantD = {
   id: 'D',
   name: 'Diligent Ducklings',
-  conversionCount: 60,
-  eventCount: 200
+  conversionCount: 3,
+  eventCount: 20
 };
 
 variantE = {
   id: 'E',
   name: 'Effervescent Elephants',
-  conversionCount: 30,
-  eventCount: 40
+  conversionCount: 6,
+  eventCount: 15
 };
 
 
@@ -127,8 +127,8 @@ myConfidence.addVariant(variantD);
 myConfidence.addVariant(variantE);
 
 
-// evaluate the variants to get the result
-result = myConfidence.getResult();
+// evaluate the variants using a Z-Test to get the result
+zTestResult = myConfidence.getResult();
 
 /*
 {
@@ -140,6 +140,18 @@ result = myConfidence.getResult();
   confidenceInterval: null,
   readable: 'There is not enough data to determine
     a conclusive result.'
+}
+*/
+
+// evaluate the variants using Chi-Square and Marascuilo's Procedure to get the result
+marascuiloResult = myConfidence.getMarascuiloResult();
+
+/*
+{ 
+  hasWinner: false,
+  hasEnoughData: false,
+  winnerID: null,
+  winnerName: null 
 }
 */
 ```
@@ -166,8 +178,8 @@ variantG = {
 myConfidence.addVariant(variantF);
 myConfidence.addVariant(variantG);
 
-// evaluate the variants to get the result
-result = myConfidence.getResult();
+// evaluate the variants using a Z-Test to get the result
+zTestResult = myConfidence.getResult();
 
 /*
 {
@@ -178,6 +190,18 @@ result = myConfidence.getResult();
   confidencePercent: 95.00,
   confidenceInterval: null,
   readable: 'There is no winner, the results are too close.'
+}
+*/
+
+// evaluate the variants using Chi-Square and Marascuilo's Procedure to get the result
+marascuiloResult = myConfidence.getMarascuiloResult();
+
+/*
+{ 
+  hasWinner: false,
+  hasEnoughData: true,
+  winnerID: null,
+  winnerName: null 
 }
 */
 ```
@@ -204,8 +228,8 @@ variantI = {
 myConfidence.addVariant(variantH);
 myConfidence.addVariant(variantI);
 
-// evaluate the variants to get the result
-result = myConfidence.getResult();
+// evaluate the variants using a Z-Test to get the result
+zTestResult = myConfidence.getResult();
 
 /*
 {
@@ -220,8 +244,79 @@ result = myConfidence.getResult();
     fall between 82% and 84.67%.'
 }
 */
-```
 
+// evaluate the variants using Chi-Square and Marascuilo's Procedure to get the result
+marascuiloResult = myConfidence.getMarascuiloResult();
+
+/*
+{ 
+  hasWinner: true,
+  hasEnoughData: true,
+  winnerID: 'H',
+  winnerName: 'Hungry Hippopotami' 
+}
+*/
+```
+***Case 4: Z-Test and Marascuilo results differ.***
+
+``` js
+// create some variants
+variantJ = {
+  id: 'J',
+  name: 'Jealous Jackals',
+  conversionCount: 5,
+  eventCount: 50
+};
+
+variantK = {
+  id: 'K',
+  name: 'Kinky Koalas',
+  conversionCount: 60,
+  eventCount: 200
+};
+
+variantL = {
+  id: 'L',
+  name: 'Lanky Llamas',
+  conversionCount: 30,
+  eventCount: 40
+};
+
+
+// add the variants to your A/B test
+myConfidence.addVariant(variantJ);
+myConfidence.addVariant(variantK);
+myConfidence.addVariant(variantL);
+
+
+// evaluate the variants using a Z-Test to get the result
+zTestResult = myConfidence.getResult();
+
+/*
+{
+  hasWinner: false,
+  hasEnoughData: false,
+  winnerID: null,
+  winnerName: null,
+  confidencePercent: null,
+  confidenceInterval: null,
+  readable: 'There is not enough data to determine
+    a conclusive result.'
+}
+*/
+
+// evaluate the variants using Chi-Square and Marascuilo's Procedure to get the result
+marascuiloResult = myConfidence.getMarascuiloResult();
+
+/*
+{ 
+  hasWinner: true,
+  hasEnoughData: true,
+  winnerID: 'L',
+  winnerName: 'Lanky Llamas' 
+}
+*/
+```
 ## Run Tests
 
 ```
@@ -238,4 +333,4 @@ Found a bug? Create an [issue](https://github.com/sendwithus/confidence/issues) 
 
 For general questions, tweet me [@jessicaraygun](https://twitter.com/jessicaraygun).
 ## Author
-Developed and maintained by [Jessica Thomas](mailto:jessica@sendwithus.com), Data Scientist @ [sendwithus.com](https://www.sendwithus.com)
+Developed and maintained by [Jessica Thomas](mailto:jessica@sendwithus.com), Data Scientist @ [sendwithus.com](https://www.sendwithus.com), with guidance and tutelage from statistics mastermind Emily Malcolm.
