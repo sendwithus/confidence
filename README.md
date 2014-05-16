@@ -67,7 +67,7 @@ myConfidence.addVariant(variantB);
 
 ### getResult()
 
-Evaluates the variants in your A/B test and determines which is the winning variant, if there is one.
+Evaluates the variants in your A/B test using a Z-Test and determines which is the winning variant, if there is one.
 
 Returns an object containing:
 
@@ -79,6 +79,19 @@ Returns an object containing:
   - ex: `{ min: 0.154, max: 0.187 }`
  - `readable`: human readable result.
   - ex: `There is not enough data to determine a winner.`
+
+### getMarascuiloResult()
+
+Evaluates the variants in your A/B test using the Chi Square Test and Marascuilo's Procedure.
+The advantage to using this method over Z-Tests is that you often need less data to determine the winning variant,
+if there is one.
+
+Returns an object containing:
+
+ - `hasWinner`: `true` if a winner could be calculated, `false` otherwise
+ - `hasEnoughData`: `true` if there is enough data to calculate a statistically significant result, `false` otherwise
+ - `winnerID`: the ID of the winning variant, or `null` if there isn't one
+ - `winnerName`: the name of the winning variant or `null` if there isn't one
 
 ## Examples
 
@@ -125,7 +138,7 @@ result = myConfidence.getResult();
   winnerName: null,
   confidencePercent: null,
   confidenceInterval: null,
-  readable: 'There is not enough data to determine 
+  readable: 'There is not enough data to determine
     a conclusive result.'
 }
 */
