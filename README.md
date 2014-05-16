@@ -82,7 +82,7 @@ Returns an object containing:
 
 ### getMarascuiloResult()
 
-Evaluates the variants in your A/B test using the Chi Square Test and Marascuilo's Procedure.
+Evaluates the variants in your A/B test using the [Chi Square Test and Marascuilo's Procedure](http://www.prenhall.com/behindthebook/0136149901/pdf/Levine_CH12.pdf).
 The advantage to using this method over Z-Tests is that you often need less data to determine the winning variant,
 if there is one.
 
