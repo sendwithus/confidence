@@ -47,21 +47,10 @@
         x = 1.0;
       } else if (y < 1.0) {
         w = y * y;
-        x = ((((((((0.000124818987 * w
-                  - 0.001075204047) * w + 0.005198775019) * w
-                  - 0.019198292004) * w + 0.059054035642) * w
-                  - 0.151968751364) * w + 0.319152932694) * w
-                  - 0.531923007300) * w + 0.797884560593) * y * 2.0;
+        x = ((((((((0.000124818987 * w - 0.001075204047) * w + 0.005198775019) * w - 0.019198292004) * w + 0.059054035642) * w - 0.151968751364) * w + 0.319152932694) * w - 0.531923007300) * w + 0.797884560593) * y * 2.0;
       } else {
         y -= 2.0;
-        x = (((((((((((((-0.000045255659 * y
-                        + 0.000152529290) * y - 0.000019538132) * y
-                        - 0.000676904986) * y + 0.001390604284) * y
-                        - 0.000794620820) * y - 0.002034254874) * y
-                        + 0.006549791214) * y - 0.010557625006) * y
-                        + 0.011630447319) * y - 0.009279453341) * y
-                        + 0.005353579108) * y - 0.002141268741) * y
-                        + 0.000535310849) * y + 0.999936657524;
+        x = (((((((((((((-0.000045255659 * y + 0.000152529290) * y - 0.000019538132) * y - 0.000676904986) * y + 0.001390604284) * y - 0.000794620820) * y - 0.002034254874) * y + 0.006549791214) * y - 0.010557625006) * y + 0.011630447319) * y - 0.009279453341) * y + 0.005353579108) * y - 0.002141268741) * y + 0.000535310849) * y + 0.999936657524;
       }
     }
     if (z > 0.0) {
@@ -75,37 +64,6 @@
 
     function ex(x) {
         return (x < -BIGX) ? 0.0 : Math.exp(x);
-    }
-    function poz(z) {
-        var y, x, w;
-        var Z_MAX = 6.0;              /* Maximum meaningful z value */
-
-        if (z == 0.0) {
-            x = 0.0;
-        } else {
-            y = 0.5 * Math.abs(z);
-            if (y >= (Z_MAX * 0.5)) {
-                x = 1.0;
-            } else if (y < 1.0) {
-                w = y * y;
-                x = ((((((((0.000124818987 * w
-                         - 0.001075204047) * w + 0.005198775019) * w
-                         - 0.019198292004) * w + 0.059054035642) * w
-                         - 0.151968751364) * w + 0.319152932694) * w
-                         - 0.531923007300) * w + 0.797884560593) * y * 2.0;
-            } else {
-                y -= 2.0;
-                x = (((((((((((((-0.000045255659 * y
-                               + 0.000152529290) * y - 0.000019538132) * y
-                               - 0.000676904986) * y + 0.001390604284) * y
-                               - 0.000794620820) * y - 0.002034254874) * y
-                               + 0.006549791214) * y - 0.010557625006) * y
-                               + 0.011630447319) * y - 0.009279453341) * y
-                               + 0.005353579108) * y - 0.002141268741) * y
-                               + 0.000535310849) * y + 0.999936657524;
-            }
-        }
-        return z > 0.0 ? ((x + 1.0) * 0.5) : ((1.0 - x) * 0.5);
     }
 
   /*  POCHISQ  --  probability of chi-square value
@@ -134,7 +92,7 @@
         if (df > 1) {
             y = ex(-a);
         }
-        s = (even ? y : (2.0 * poz(-Math.sqrt(x))));
+        s = (even ? y : (2.0 * zSquareProbability(-Math.sqrt(x))));
         if (df > 2) {
             x = 0.5 * (df - 1.0);
             z = (even ? 1.0 : 0.5);
@@ -160,7 +118,7 @@
         } else {
             return s;
         }
-    }
+    };
 
     /*  CRITCHI  --  Compute critical chi-square value to
                      produce given p.  We just do a bisection
@@ -192,28 +150,43 @@
             chisqval = (maxchisq + minchisq) * 0.5;
         }
         return chisqval;
-      }
+      };
   /** Public Constants **/
 
   Confidence.prototype.addVariant = function(variant) {
-    // variant must have properties conversionCount, eventCount
-    if (variant.hasOwnProperty('id') &&
-      variant.hasOwnProperty('conversionCount') &&
-      variant.hasOwnProperty('eventCount')) {
-      if(!variant.hasOwnProperty('name')) {
-        variant['name'] = 'Variant ' + variant.id;
-      }
-      this._variants[variant.id] = variant;
+    // check if variant ID already exists
+    if (this.variantExists(variant.id)) {
+      var message = 'A variant with ID \'' + variant.id + '\' already exists.';
+      throw new Error (message);
     } else {
-      throw new Error('variant object needs conversionCount and eventCount properties');
+      // add the variant!
+      // variant must have properties conversionCount, eventCount
+      if (variant.hasOwnProperty('id') &&
+        variant.hasOwnProperty('conversionCount') &&
+        variant.hasOwnProperty('eventCount')) {
+        if(!variant.hasOwnProperty('name')) {
+          variant['name'] = 'Variant ' + variant.id;
+        }
+        this._variants[variant.id] = variant;
+      } else {
+        throw new Error('variant object needs conversionCount and eventCount properties');
+      }
     }
   };
 
   Confidence.prototype.getVariant = function(variantID) {
-    if (this._variants.hasOwnProperty(variantID)) {
+    if (this.variantExists(variantID)) {
       return this._variants[variantID];
     } else {
       throw new Error('The variant you requested does not exist.');
+    }
+  };
+
+  Confidence.prototype.variantExists = function(variantID) {
+    if (this._variants.hasOwnProperty(variantID)) {
+      return true;
+    } else {
+      return false;
     }
   };
 
@@ -440,9 +413,9 @@
     return standardError;
   };
 
-/*************************************************************************
-CONFIDENCE TO BEAT BASELINE
-*/
+//**************************************************************************//
+// CONFIDENCE TO BEAT BASELINE
+//**************************************************************************//
 
     /*
     Iterate through collection of variants to test, and compare each
@@ -474,6 +447,7 @@ CONFIDENCE TO BEAT BASELINE
 
     // If the variant is the baseline, put -- in its place.
     }
+    return result;
   };
 
   /*
@@ -639,7 +613,7 @@ Confidence.prototype.getObservedValues = function() {
 //   p = sum of successes / sum of totals
 Confidence.prototype.getPooledProportion = function(observedValues) {
   var summedSuccesses = 0;
-  var summedTotals = 0 ;
+  var summedTotals = 0;
 
   // sum the successes across all variants, and
   // sum the totals across all variants
@@ -648,8 +622,12 @@ Confidence.prototype.getPooledProportion = function(observedValues) {
     summedTotals += observedValues[variant].total;
   }
 
-  var result = summedSuccesses / summedTotals;
-  return result;
+  if (summedTotals === 0) {
+    throw new Error('Summed total is zero: cannot divide by zero to produce rate.');
+  } else {
+    var result = summedSuccesses / summedTotals;
+    return result;
+  }
 };
 
 // Compute and store expected successes and failures.
@@ -663,16 +641,15 @@ Confidence.prototype.getExpectedValues = function(observedValues, pooledProporti
 
   for (var variant in observedValues) {
     var expectedStats = {};
+    var success;
+    var fail;
 
     // If any expected count < 5, we don't have enough data.
-    var success = pooledProportion * observedValues[variant].total;
-    if (success < 5) {
+    success = pooledProportion * observedValues[variant].total;
+    fail = (1 - pooledProportion) * observedValues[variant].total;
+
+    if (success < 5 || fail < 5) {
       expectedValues['hasEnoughData'] = false;
-    } else {
-      var fail = (1 - pooledProportion) * observedValues[variant].total;
-      if (fail < 5) {
-        expectedValues['hasEnoughData'] = false;
-      }
     }
 
     expectedStats['success'] = success;
@@ -692,6 +669,8 @@ Confidence.prototype.getExpectedValues = function(observedValues, pooledProporti
 // SHORTCUT THIS? calculate critChi here and check at every step
 Confidence.prototype.getChiParts = function(observedValues, expectedValues) {
   var chiPartValues = {};
+  var success;
+  var fail;
 
   for (var variant in observedValues) {
     var chiPartStats = {};
@@ -700,17 +679,23 @@ Confidence.prototype.getChiParts = function(observedValues, expectedValues) {
     var observedSuccess = observedValues[variant].success;
     var expectedSuccess = expectedValues[variant].success;
 
-    var success = Math.pow((observedSuccess - expectedSuccess), 2) / expectedSuccess;
-
-    chiPartStats['success'] = success;
+    if (expectedSuccess === 0) {
+      throw new Error('Cannot divide by zero to produce chi parts.');
+    } else {
+      success = Math.pow((observedSuccess - expectedSuccess), 2) / expectedSuccess;
+      chiPartStats['success'] = success;
+    }
 
     // Compute Chi-Part for fail
     var observedFail = observedValues[variant].fail;
     var expectedFail = expectedValues[variant].fail;
 
-    var fail = Math.pow((observedFail - expectedFail), 2) / expectedFail;
-
-    chiPartStats['fail'] = fail;
+    if (expectedFail === 0) {
+      throw new Error('Cannot divide by zero to produce chi parts.');
+    } else {
+      fail = Math.pow((observedFail - expectedFail), 2) / expectedFail;
+      chiPartStats['fail'] = fail;
+    }
 
     chiPartValues[variant] = chiPartStats;
   }

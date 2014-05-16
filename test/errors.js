@@ -54,13 +54,60 @@ module.exports['Add Variant'] = {
 
     test.done();
   },
+  'Variant with duplicate ID does not add': function(test) {
+    confidence = new Confidence();
+    test.ok(confidence);
+
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 3000,
+      eventCount: 3000
+    });
+
+    test.ok(confidence._variants.hasOwnProperty('A'));
+
+    test.throws(function(){
+      confidence.addVariant({
+        id: 'A',
+        name: 'Variant A',
+        conversionCount: 3000,
+        eventCount: 3000
+      });
+    }, Error, 'Variant with ID that already exists should not add.');
+
+    test.done();
+  },
+};
+
+//**************************************************************************//
+
+module.exports['Variant Exists'] = {
+
+  // Verifies that the total count cannot be zero.
+  'Test existence of specific variant': function(test) {
+    confidence = new Confidence();
+
+    test.equal(confidence.variantExists('A'), false, 'Variant ID \'A\' should not exist');
+
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 1356,
+      eventCount: 3150
+    });
+
+    test.equal(confidence.variantExists('A'), true, 'Variant ID \'A\' should exist');
+
+    test.done();
+  },
 };
 
 //**************************************************************************//
 
 module.exports['Get Variant'] = {
 
-  'Test existence of specific variant': function(test) {
+  'Returns specific variant if it exists': function(test) {
 
     confidence = new Confidence();
     test.ok(confidence);
@@ -642,7 +689,7 @@ module.exports['zScore Probability'] = {
 
   // Verifies zscore of 6.0 (maximum meaningful zscore) produces 100% confidence result.
   // Also verifies that max confidence interval does not exceed 100%
-  'Test max meaningful zScore and confidence interval max <= 100%': function(test) {
+  'Max meaningful zScore and confidence interval max <= 100%': function(test) {
 
     var confidence = new Confidence({zScore: 6});
 
@@ -784,7 +831,7 @@ module.exports['Get Pooled Rate'] = {
 
     var pooledRate = confidence.getPooledRate('A', 'B');
 
-    test.equal(pooledRate, 0, 'Pooled rate should be zero if there are no conversions.')
+    test.equal(pooledRate, 0, 'Pooled rate should be zero if there are no conversions.');
     test.done();
   },
 
@@ -883,6 +930,7 @@ module.exports['Get Marascuilo Result'] = {
 
     test.done();
   },
+
   'Enough data no result (small variance among variants)': function(test) {
     var confidence = new Confidence();
 
@@ -909,7 +957,8 @@ module.exports['Get Marascuilo Result'] = {
 
     test.done();
   },
-  'Enough data no result (large variance, tie for winner)': function(test) {
+
+  'Enough data no result (large variance, but tie for winner)': function(test) {
     var confidence = new Confidence();
 
     // create some variants
@@ -938,6 +987,496 @@ module.exports['Get Marascuilo Result'] = {
     test.equal(result.hasEnoughData, true, 'There should be enough data');
     test.equal(result.winnerID, null, 'There should be no winnerID');
     test.equal(result.winnerName, null, 'There should be no winnerName');
+
+    test.done();
+  },
+
+  'Enough data and result': function(test) {
+    var confidence = new Confidence();
+
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 40,
+      eventCount: 100
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 80,
+      eventCount: 100
+    });
+    confidence.addVariant({
+      id: 'C',
+      name: 'Variant C',
+      conversionCount: 6,
+      eventCount: 100
+    });
+
+    var result = confidence.getMarascuiloResult();
+
+    test.equal(result.hasWinner, true, 'There should be a winner');
+    test.equal(result.hasEnoughData, true, 'There should be enough data');
+    test.equal(result.winnerID, 'B', 'B should be the winner ID');
+    test.equal(result.winnerName, 'Variant B', 'Variant B should be the winner name');
+
+    test.done();
+  },
+};
+
+//**************************************************************************//
+
+module.exports['Get Observed Values'] = {
+  'Success and fail counts calculated accurately': function(test) {
+    var confidence = new Confidence();
+
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 50,
+      eventCount: 100
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 40,
+      eventCount: 100
+    });
+
+    var result = confidence.getObservedValues();
+
+    test.equal(result['A']['success'], 50, 'Variant A should have 50 successes');
+    test.equal(result['A']['fail'], 50, 'Variant A should have 50 fails');
+    test.equal(result['A']['total'], 100, 'Variant A should have 100 total');
+
+    test.equal(result['B']['success'], 40, 'Variant B should have 40 successes');
+    test.equal(result['B']['fail'], 60, 'Variant B should have 60 fails');
+    test.equal(result['B']['total'], 100, 'Variant B should have 100 total');
+
+    test.done();
+  },
+};
+
+//**************************************************************************//
+
+module.exports['Get Pooled Proportion'] = {
+  'Average case where all observed values exist': function(test) {
+    var confidence = new Confidence();
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 50,
+      eventCount: 100
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 40,
+      eventCount: 100
+    });
+
+    var observedValues = confidence.getObservedValues();
+    var result = confidence.getPooledProportion(observedValues);
+
+    test.equal(result, 0.45, 'Pooled proportion should be 90/200, or 0.45');
+
+    test.done();
+  },
+
+  'Error if the sum of the totals is zero': function(test) {
+    var confidence = new Confidence();
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 0,
+      eventCount: 0
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 0,
+      eventCount: 0
+    });
+
+    var observedValues = confidence.getObservedValues();
+
+    test.throws(function() {
+      confidence.getPooledProportion(observedValues);
+    }, Error, 'There should be an error when summed totals is zero');
+    test.done();
+  },
+};
+
+//**************************************************************************//
+
+module.exports['Get Expected Values'] = {
+  'Has enough data': function(test) {
+    var confidence = new Confidence();
+
+    // Fake some data
+    var observedValues = {
+      A: { success: 50, fail: 50, total: 100 },
+      B: { success: 40, fail: 60, total: 100 },
+      C: { success: 60, fail: 40, total: 100 }
+    };
+
+    var pooledProportion = 0.5;
+
+    var expectedResult = confidence.getExpectedValues(observedValues, pooledProportion);
+
+    test.equal(expectedResult['A']['success'], 50, 'Variant A should have 50 expected successes');
+    test.equal(expectedResult['A']['fail'], 50, 'Variant A should have 50 expected fails');
+
+    test.equal(expectedResult['B']['success'], 50, 'Variant B should have 50 expected successes');
+    test.equal(expectedResult['B']['fail'], 50, 'Variant B should have 50 expected fails');
+
+    test.equal(expectedResult['C']['success'], 50, 'Variant C should have 50 expected successes');
+    test.equal(expectedResult['C']['fail'], 50, 'Variant C should have 50 expected fails');
+
+    test.equal(expectedResult['hasEnoughData'], true, 'There should be enough data');
+
+    test.done();
+  },
+
+  'Does not have enough data': function(test) {
+    var confidence = new Confidence();
+
+    // Fake some data
+    var observedValues = {
+      A: { success: 1, fail: 4, total: 5 },
+      B: { success: 2, fail: 3, total: 5 },
+      C: { success: 3, fail: 2, total: 5 }
+    };
+
+    var pooledProportion = 0.4;
+
+    var expectedResult = confidence.getExpectedValues(observedValues, pooledProportion);
+
+    test.equal(expectedResult['A']['success'], 2, 'Variant A should have 2 expected successes');
+    test.equal(expectedResult['A']['fail'], 3, 'Variant A should have 3 expected fails');
+
+    test.equal(expectedResult['B']['success'], 2, 'Variant B should have 2 expected successes');
+    test.equal(expectedResult['B']['fail'], 3, 'Variant B should have 3 expected fails');
+
+    test.equal(expectedResult['C']['success'], 2, 'Variant C should have 2 expected successes');
+    test.equal(expectedResult['C']['fail'], 3, 'Variant C should have 3 expected fails');
+
+    test.equal(expectedResult['hasEnoughData'], false, 'There should not be enough data');
+
+    test.done();
+  },
+};
+
+//**************************************************************************//
+
+module.exports['Get Chi Parts'] = {
+  'Average error-free case': function(test) {
+    var confidence = new Confidence();
+
+    // Fake some data
+    var observedValues = {
+      A: { success: 50, fail: 50, total: 100 },
+      B: { success: 40, fail: 60, total: 100 },
+      C: { success: 60, fail: 40, total: 100 }
+    };
+
+    var expectedValues = {
+      A: { success: 50, fail: 50 },
+      B: { success: 50, fail: 50 },
+      C: { success: 50, fail: 50 },
+      hasEnoughData: true
+    };
+
+    var chiParts = confidence.getChiParts(observedValues, expectedValues);
+
+    test.equal(chiParts['A']['success'], 0, 'Variant A \'success\' chi part should be 0');
+    test.equal(chiParts['A']['fail'], 0, 'Variant A \'fail\' chi part should be 0');
+
+    test.equal(chiParts['B']['success'], 2, 'Variant B \'success\' chi part should be 2');
+    test.equal(chiParts['B']['fail'], 2, 'Variant B \'fail\' chi part should be 2');
+
+    test.equal(chiParts['C']['success'], 2, 'Variant C \'success\' chi part should be 2');
+    test.equal(chiParts['C']['fail'], 2, 'Variant C \'fail\' chi part should be 2');
+
+    test.done();
+  },
+
+  'Error when expected value is zero': function(test) {
+    var confidence = new Confidence();
+
+    // Fake some data
+    var observedValues = {
+      A: { success: 100, fail: 0, total: 100 },
+      B: { success: 100, fail: 0, total: 100 },
+      C: { success: 100, fail: 0, total: 100 }
+    };
+
+    var expectedValues = {
+      A: { success: 100, fail: 0 },
+      B: { success: 100, fail: 0 },
+      C: { success: 100, fail: 0 },
+      hasEnoughData: false
+    };
+
+    test.throws(function() {
+      confidence.getChiParts(observedValues, expectedValues);
+    }, Error, 'Expected values cannot be zero');
+
+    test.done();
+  },
+};
+
+//**************************************************************************//
+
+module.exports['Sum Chi Parts'] = {
+  'Calculates sum correctly': function(test) {
+    var confidence = new Confidence();
+
+    var chiPartValues = {
+      A: { success: 0, fail: 0 },
+      B: { success: 2, fail: 2 },
+      C: { success: 2, fail: 2 }
+    };
+
+    var sumChiParts = confidence.sumChiParts(chiPartValues);
+    test.equals(sumChiParts, 8, 'The chi part sum should be 8');
+
+    test.done();
+  },
+};
+
+//**************************************************************************//
+
+module.exports['Get Degrees of Freedom'] = {
+  'Degrees of Freedom = number of variants - 1': function(test) {
+    var confidence = new Confidence();
+
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 50,
+      eventCount: 100
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 40,
+      eventCount: 100
+    });
+
+    var result = confidence.getDegreesOfFreedom();
+    test.equal(result, 1, 'With 2 variants, degrees of freedom should be 1');
+
+    confidence.addVariant({
+      id: 'C',
+      name: 'Variant C',
+      conversionCount: 40,
+      eventCount: 100
+    });
+
+    result = confidence.getDegreesOfFreedom();
+    test.equal(result, 2, 'With 3 variants, degrees of freedom should be 2');
+
+    test.done();
+  },
+};
+
+//**************************************************************************//
+
+module.exports['Get Best Variant'] = {
+  'Returns the variant with the highest rate': function(test) {
+    var confidence = new Confidence();
+
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 60,
+      eventCount: 100
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 63,
+      eventCount: 100
+    });
+    confidence.addVariant({
+      id: 'C',
+      name: 'Variant C',
+      conversionCount: 80,
+      eventCount: 100
+    });
+
+    var bestVariant = confidence.getBestVariant();
+
+    test.equal(bestVariant, 'C', 'Variant C should have the highest rate');
+
+    test.done();
+  },
+};
+
+//**************************************************************************//
+
+module.exports['Marascuilo'] = {
+  'There is a winner': function(test) {
+    var confidence = new Confidence();
+
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 20,
+      eventCount: 100
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 90,
+      eventCount: 100
+    });
+    confidence.addVariant({
+      id: 'C',
+      name: 'Variant C',
+      conversionCount: 40,
+      eventCount: 100
+    });
+
+    var bestVariantID = 'B';
+    var critChi = 5.9915;
+
+    var result = confidence.marascuilo(bestVariantID, critChi);
+    test.equal(result.hasWinner, true, 'There should be a winner');
+    test.equal(result.hasEnoughData, true, 'There should be enough data');
+    test.equal(result.winnerID, 'B', '\'B\' should be the winning variant ID');
+    test.equal(result.winnerName, 'Variant B', '\'Variant B\' should be the winning variant');
+
+    test.done();
+  },
+
+  'There is no winner': function(test) {
+    var confidence = new Confidence();
+
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 91,
+      eventCount: 100
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 90,
+      eventCount: 100
+    });
+    confidence.addVariant({
+      id: 'C',
+      name: 'Variant C',
+      conversionCount: 40,
+      eventCount: 100
+    });
+
+    var bestVariantID = 'A';
+    var critChi = 5.9915;
+
+    var result = confidence.marascuilo(bestVariantID, critChi);
+    test.equal(result.hasWinner, false, 'There should not be a winner');
+    test.equal(result.hasEnoughData, true, 'There should be enough data');
+    test.equal(result.winnerID, null, 'There should be no winner ID');
+    test.equal(result.winnerName, null, 'There should be no winner name');
+
+    test.done();
+  },
+};
+
+//**************************************************************************//
+
+module.exports['Compute Test Statistic'] = {
+  'Tie for winner': function(test) {
+    var confidence = new Confidence();
+
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 60,
+      eventCount: 100
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 60,
+      eventCount: 100
+    });
+
+    var bestVariantID = 'A';
+    var challengerVariantID = 'B';
+
+    var testStatistic = confidence.computeTestStatistic(bestVariantID, challengerVariantID);
+    test.equal(testStatistic, 0, 'When there is a tie, the test stat should be 0');
+
+    test.done();
+  },
+
+  'Large difference between variant rates': function(test) {
+    var confidence = new Confidence();
+
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 40,
+      eventCount: 100
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 90,
+      eventCount: 100
+    });
+
+    var bestVariantID = 'B';
+    var challengerVariantID = 'A';
+
+    var testStatistic = confidence.computeTestStatistic(bestVariantID, challengerVariantID);
+    test.equal(testStatistic, 0.5, 'The test stat should be 0.5');
+
+    test.done();
+  },
+};
+
+//**************************************************************************//
+
+module.exports['Compute Critical Value'] = {
+  'Computes critical value accurately': function(test) {
+    var confidence = new Confidence();
+
+    // create some variants
+    confidence.addVariant({
+      id: 'A',
+      name: 'Variant A',
+      conversionCount: 40,
+      eventCount: 100
+    });
+    confidence.addVariant({
+      id: 'B',
+      name: 'Variant B',
+      conversionCount: 90,
+      eventCount: 100
+    });
+
+    var bestVariantID = 'B';
+    var challengerVariantID = 'A';
+    var critChi = 5.9915;
+
+    var criticalValue = confidence.computeCriticalValue(bestVariantID, challengerVariantID, critChi);
+
+    test.equal(criticalValue, 0.14061276613451568, 'Critical Value should be 0.14...');
 
     test.done();
   },
