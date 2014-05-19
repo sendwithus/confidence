@@ -333,4 +333,4 @@ Found a bug? Create an [issue](https://github.com/sendwithus/confidence/issues) 
 
 For general questions, tweet me [@jessicaraygun](https://twitter.com/jessicaraygun).
 ## Author
-Developed and maintained by [Jessica Thomas](mailto:jessica@sendwithus.com), Data Scientist @ [sendwithus.com](https://www.sendwithus.com), with guidance and tutelage from statistics mastermind [Emily Malcolm](mailto:emalcol@uvic.ca).
+Developed and maintained by [Jessica Thomas](mailto:jessica@sendwithus.com), Data Scientist @ [sendwithus.com](https://www.sendwithus.com), with guidance and tutelage from Statistics Mastermind [Emily Malcolm](mailto:emalcol@uvic.ca).
