@@ -2,7 +2,7 @@
 
 **Confidence.js** provides two methods for calculating the statistical significance of an A/B Test:
 - The Z-Test Method
-- Chi Square Test and Marasciilo's Procedure
+- Chi Square Test and Marascuilo's Procedure
 
 Both methods have advantages depending on your particular use case. This document describes the algorithms in details, and highlights the advantages of each.
 
