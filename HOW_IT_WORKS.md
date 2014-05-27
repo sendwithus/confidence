@@ -4,7 +4,7 @@
 - The Z-Test Method
 - Chi Square Test and Marascuilo's Procedure
 
-Both methods have advantages depending on your particular use case. This document describes the algorithms in details, and highlights the advantages of each.
+Both methods have advantages depending on your particular use case. This document describes the algorithms in detail and highlights the advantages of each.
 
 ## The Z-Test Method
 
