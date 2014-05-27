@@ -1,10 +1,13 @@
-[Download confidence.js](https://raw.githubusercontent.com/sendwithus/confidence/master/confidence.js)
+# Confidence.js: API Reference and Examples
 
-Include `confidence.js` on your page.
+## Installation
+
+[Download confidence.js here](confidence.js)
+
+Include `confidence.js` in your HTML.
 ``` HTML
 <script src="path/to/confidence.js"></script>
 ```
-
 
 ## Usage
 

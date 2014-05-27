@@ -6,23 +6,23 @@
 
 Just getting started? **Awesome.** Here's what you need to know:
 
-* [API Reference and Example Code](API_REFERENCE.md)
+* [API Reference and Examples](API_REFERENCE.md)
 * Want to know more about the math? [Read how it works](HOW_IT_WORKS.md)
 
-## Quickstart Guide
+## Getting Started
 
 [Download confidence.js here](confidence.js)
 
-Include `confidence.js` on your page.
+Include `confidence.js` in your HTML.
 ``` HTML
 <script src="path/to/confidence.js"></script>
 ```
 
 **You're all ready!** Start testing... with confidence.
 
-## Examples
+### Example
 
-We have many examples in the [API Reference](API.md). Here's a simple one to get you started:
+We have many examples in the [API Reference](API_REFERENCE.md). Here's a simple one to get you started:
 
 ``` js
 // Create a new test result
@@ -55,13 +55,13 @@ zTestResult = myConfidence.getResult();
   confidencePercent: 95.00,
   confidenceInterval: { min: 82, max: 84.67 },
   readable: 'With 95% confidence, the true population
-    parameter of the "Variant A" variant will
+    parameter of the "Var8iant A" variant will
     fall between 82% and 84.67%.'
 }
 */
 ```
 
-## Running the Tests
+### Running the Tests
 
 ```
 npm install
