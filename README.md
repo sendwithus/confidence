@@ -1,13 +1,15 @@
+# Confidence.js
+
 **Confidence.js** is a light-weight JavaScript library to help you make sense of your [A/B Test](http://en.wikipedia.org/wiki/A/B_testing) results. Given an A/B test (or "Split Test") result set, Confidence.js will tell you if a statistical "winner" can be determined.
 
-# Getting started
+## Documentation
 
 Just getting started? **Awesome.** Here's what you need to know:
 
 * [API Reference and Example Code](API_REFERENCE.md)
 * Want to know more about the math? [Read how it works](HOW_IT_WORKS.md)
 
-# Quickstart Guide
+## Quickstart Guide
 
 [Download confidence.js here](confidence.js)
 
@@ -18,7 +20,7 @@ Include `confidence.js` on your page.
 
 **You're all ready!** Start testing... with confidence.
 
-# Examples
+## Examples
 
 We have many examples in the [API Reference](API.md). Here's a simple one to get you started:
 
@@ -59,25 +61,25 @@ zTestResult = myConfidence.getResult();
 */
 ```
 
-# Running the Tests
+## Running the Tests
 
 ```
 npm install
 npm test
 ```
 
-# TODO
+## Feature Requests and TODO
 
 - implement "Confidence to beat baseline" comparison **(in progress)**
 - add `removeVariant` function
 
 
-# Issues and Questions
+## Issues and Questions
 
 Found a bug? Create an [issue](https://github.com/sendwithus/confidence/issues) here on GitHub!
 
 For general questions, tweet me [@jessicaraygun](https://twitter.com/jessicaraygun).
 
-# Author
+## Authors
 
 Developed and maintained by [Jessica Thomas](mailto:jessica@sendwithus.com), Data Scientist @ [sendwithus.com](https://www.sendwithus.com), with guidance and tutelage from Statistics Mastermind [Emily Malcolm](mailto:emalcol@uvic.ca).
