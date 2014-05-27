@@ -68,6 +68,8 @@ myConfidence.addVariant(variantB);
 
 Evaluates the variants in your A/B test using a Z-Test and determines which is the winning variant, if there is one.
 
+For more information on The Z-Test Method, [read how it works here](HOW_IT_WORKS.md).
+
 Returns an object containing:
 
  - `hasWinner`: `true` if a winner could be calculated, `false` otherwise
@@ -82,8 +84,8 @@ Returns an object containing:
 ### getMarascuiloResult()
 
 Evaluates the variants in your A/B test using the [Chi Square Test and Marascuilo's Procedure](http://www.prenhall.com/behindthebook/0136149901/pdf/Levine_CH12.pdf).
-The advantage to using this method over Z-Tests is that you often need less data to determine the winning variant,
-if there is one.
+
+For more information on Chi Square Test and Marascuilo's Procedure, [read how it works here](HOW_IT_WORKS.md).
 
 Returns an object containing:
 
