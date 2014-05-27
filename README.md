@@ -4,10 +4,8 @@
 
 ## Documentation
 
-Just getting started? **Awesome.** Here's what you need to know:
-
 * [API Reference and Examples](API_REFERENCE.md)
-* Want to know more about the math? [Read how it works](HOW_IT_WORKS.md)
+* [How It Works](HOW_IT_WORKS.md)
 
 ## Getting Started
 
@@ -60,6 +58,16 @@ zTestResult = myConfidence.getResult();
 }
 */
 ```
+
+### How It Works
+
+Confidence.js provides two methods for evaluating an A/B test:
+- The Z-Test Method
+- Chi Square Test and Marasciilo's Procedure
+
+Selecting an appropriate method depends on your data set and use case - both have advantages.
+
+[Learn how each method works here.](HOW_IT_WORKS.md)
 
 ### Running the Tests
 

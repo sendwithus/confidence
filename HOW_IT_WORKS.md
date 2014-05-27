@@ -1,4 +1,4 @@
-# Confidence.js: How It Works
+# How It Works
 
 **Confidence.js** provides two methods for calculating the statistical significance of an A/B Test:
 - The Z-Test Method

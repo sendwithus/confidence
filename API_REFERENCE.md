@@ -1,4 +1,4 @@
-# Confidence.js: API Reference and Examples
+# API Reference and Examples
 
 ## Installation
 
