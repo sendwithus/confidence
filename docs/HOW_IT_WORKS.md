@@ -8,11 +8,25 @@ Both methods have advantages depending on your particular use case. This documen
 
 ## The Z-Test Method
 
-### TODO
+Here is our Z-Testing algorithm:
+```
+1. For each variant:
+  a. Compute the required sample size.
+  b. CHECK: Do we have enough data?
+  c. IF NO --> Exit. There is not enough data to get an accurate result.
+  d. IF YES -> Compute confidence interval for this variant.
+2. If we make it through all the variants, we have enough data to calculate an accurate result.
+3. Analyze the confidence intervals.
+4. CHECK: Does the variant with the highest success rate stand out?
+5. IF NO --> Exit. There is no winner. The results are too close.
+6. IF YES --> Exit. The variant with the highest success rate is our winner.
+```
 
-## Chi Square Test and Marascuillo's Procedure
+## Chi-Square Test and Marascuillo's Procedure
 
-This method evaluates the variants in your A/B test using the [Chi Square Test and Marascuillo's Procedure](http://www.prenhall.com/behindthebook/0136149901/pdf/Levine_CH12.pdf). It's primarily used for tests with two or more variants, and often needs less data than The Z-Test Method to determine a winning variant.
+This method evaluates the variants in your A/B test using the [Chi Square Test and Marascuillo's Procedure](http://www.prenhall.com/behindthebook/0136149901/pdf/Levine_CH12.pdf). Because it controls for the familywise error rate, it is useful for A/B tests with more than two variants. 
 
 Here is a flow chart illustrating the algorithm used in this method:
 ![Chi-Square Test and Marascuillo's Procedure Flow Chart](http://sendwithus.github.io/confidence/docs/Marascuillo-FlowChart.png)
+
+We break down this algorithm in more detail with an example [here](http://sendwithus.github.io/confidence/docs/CheatSheet-Chi-Square.pdf) and [here](http://sendwithus.github.io/confidence/docs/CheatSheet-Marascuillo.pdf).
