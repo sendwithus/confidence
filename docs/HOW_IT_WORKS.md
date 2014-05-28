@@ -30,4 +30,4 @@ This method evaluates the variants in your A/B test using the [Chi Square Test a
 Here is a flow chart illustrating the algorithm used in this method:
 ![Chi-Square Test and Marascuillo's Procedure Flow Chart](http://sendwithus.github.io/confidence/docs/Marascuillo-FlowChart.png)
 
-We break down this algorithm in more detail with an example [here](http://sendwithus.github.io/confidence/docs/CheatSheet-Chi-Square.pdf) and [here](http://sendwithus.github.io/confidence/docs/CheatSheet-Marascuillo.pdf).
+We break down this algorithm in more detail with examples [here](http://sendwithus.github.io/confidence/docs/CheatSheet-Chi-Square.pdf) and [here](http://sendwithus.github.io/confidence/docs/CheatSheet-Marascuillo.pdf).
