@@ -4,8 +4,8 @@
 
 ## Documentation
 
-* [API Reference and Examples](API_REFERENCE.md)
-* [How It Works](HOW_IT_WORKS.md)
+* [API Reference and Examples](docs/API_REFERENCE.md)
+* [How It Works](docs/HOW_IT_WORKS.md)
 
 ## Getting Started
 
@@ -20,7 +20,7 @@ Include `confidence.js` in your HTML.
 
 ### Example
 
-We have many examples in the [API Reference](API_REFERENCE.md). Here's a simple one to get you started:
+We have many examples in the [API Reference](docs/API_REFERENCE.md). Here's a simple one to get you started:
 
 ``` js
 // Create a new test result
@@ -67,7 +67,7 @@ Confidence.js provides two methods for evaluating an A/B test:
 
 Selecting an appropriate method depends on your data set and use case - both have advantages.
 
-[Learn how each method works here.](HOW_IT_WORKS.md)
+[Learn how each method works here.](docs/HOW_IT_WORKS.md)
 
 ### Running the Tests
 
