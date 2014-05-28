@@ -4,7 +4,7 @@
 - The Z-Test Method
 - Chi-Square Test and Marascuillo's Procedure
 
-Both methods are ultimately similar for two proportions, but the Z-Test Method tends to require a larger sample size. Since the Chi-Square/Marascuillo method controls for overall error rate, we recommend that you use that method if you have more than two variants.
+Both methods are ultimately similar for two variants, but the Z-Test Method tends to require a larger sample size. Since the Chi-Square/Marascuillo method controls for overall error rate, we recommend that method is used for more than two variants.
 
 ## The Z-Test Method
 
