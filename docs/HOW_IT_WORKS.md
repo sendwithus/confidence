@@ -15,4 +15,4 @@ Both methods have advantages depending on your particular use case. This documen
 This method evaluates the variants in your A/B test using the [Chi Square Test and Marascuillo's Procedure](http://www.prenhall.com/behindthebook/0136149901/pdf/Levine_CH12.pdf). It's primarily used for tests with two or more variants, and often needs less data than The Z-Test Method to determine a winning variant.
 
 Here is a flow chart illustrating the algorithm used in this method:
-![Chi-Square Test and Marascuillo's Procedure Flow Chart](https://raw.githubusercontent.com/sendwithus/confidence/master/docs/Marascuillo-FlowChart.png)
+![Chi-Square Test and Marascuillo's Procedure Flow Chart](http://sendwithus.github.io/confidence/docs/Marascuillo-FlowChart.png)
