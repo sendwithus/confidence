@@ -81,11 +81,11 @@ Returns an object containing:
  - `readable`: human readable result.
   - ex: `There is not enough data to determine a winner.`
 
-### getMarascuiloResult()
+### getMarascuilloResult()
 
-Evaluates the variants in your A/B test using the [Chi Square Test and Marascuilo's Procedure](http://www.prenhall.com/behindthebook/0136149901/pdf/Levine_CH12.pdf).
+Evaluates the variants in your A/B test using the [Chi Square Test and Marascuillo's Procedure](http://www.prenhall.com/behindthebook/0136149901/pdf/Levine_CH12.pdf).
 
-For more information on Chi Square Test and Marascuilo's Procedure, [read how it works here](HOW_IT_WORKS.md).
+For more information on Chi Square Test and Marascuillo's Procedure, [read how it works here](HOW_IT_WORKS.md).
 
 Returns an object containing:
 
@@ -144,8 +144,8 @@ zTestResult = myConfidence.getResult();
 }
 */
 
-// evaluate the variants using Chi-Square and Marascuilo's Procedure to get the result
-marascuiloResult = myConfidence.getMarascuiloResult();
+// evaluate the variants using Chi-Square and Marascuillo's Procedure to get the result
+marascuilloResult = myConfidence.getMarascuilloResult();
 
 /*
 {
@@ -194,8 +194,8 @@ zTestResult = myConfidence.getResult();
 }
 */
 
-// evaluate the variants using Chi-Square and Marascuilo's Procedure to get the result
-marascuiloResult = myConfidence.getMarascuiloResult();
+// evaluate the variants using Chi-Square and Marascuillo's Procedure to get the result
+marascuilloResult = myConfidence.getMarascuilloResult();
 
 /*
 {
@@ -246,8 +246,8 @@ zTestResult = myConfidence.getResult();
 }
 */
 
-// evaluate the variants using Chi-Square and Marascuilo's Procedure to get the result
-marascuiloResult = myConfidence.getMarascuiloResult();
+// evaluate the variants using Chi-Square and Marascuillo's Procedure to get the result
+marascuilloResult = myConfidence.getMarascuilloResult();
 
 /*
 {
@@ -258,7 +258,7 @@ marascuiloResult = myConfidence.getMarascuiloResult();
 }
 */
 ```
-***Case 4: Z-Test and Marascuilo results differ.***
+***Case 4: Z-Test and Marascuillo results differ.***
 
 ``` js
 // create some variants
@@ -306,8 +306,8 @@ zTestResult = myConfidence.getResult();
 }
 */
 
-// evaluate the variants using Chi-Square and Marascuilo's Procedure to get the result
-marascuiloResult = myConfidence.getMarascuiloResult();
+// evaluate the variants using Chi-Square and Marascuillo's Procedure to get the result
+marascuilloResult = myConfidence.getMarascuilloResult();
 
 /*
 {

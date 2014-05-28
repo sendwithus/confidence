@@ -418,10 +418,10 @@
   };
 
 //**************************************************************************//
-// CHI-SQUARED AND MARASCUILO'S PROCEDURE
+// CHI-SQUARED AND MARASCUILLO'S PROCEDURE
 //**************************************************************************//
 
-Confidence.prototype.getMarascuiloResult = function() {
+Confidence.prototype.getMarascuilloResult = function() {
   var result;
 
   // Calculate observed and expected values.
@@ -451,9 +451,9 @@ Confidence.prototype.getMarascuiloResult = function() {
   var critChi = critchi(probability, 2);
 
   if (chiPartSum > critChi) {
-    // there is a difference, proceed to marascuilo
+    // there is a difference, proceed to marascuillo
     var bestVariant = this.getBestVariant();
-    var result = this.marascuilo(bestVariant, critChi);
+    var result = this.marascuillo(bestVariant, critChi);
   } else {
     // Enough data, no winner
     result = {
@@ -619,7 +619,7 @@ Confidence.prototype.getBestVariant = function() {
 // if each test stat is greater than the corresponding critical value,
 // then the best variant is the winner
 // otherwise, there is no winner?
-Confidence.prototype.marascuilo = function(bestVariantID, critChi) {
+Confidence.prototype.marascuillo = function(bestVariantID, critChi) {
   var result;
 
   // TODO if there is only one variant there needs to be a check somewhere because this will probably mess up.
