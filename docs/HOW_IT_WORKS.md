@@ -2,9 +2,9 @@
 
 **Confidence.js** provides two methods for calculating the statistical significance of an A/B Test:
 - The Z-Test Method
-- Chi Square Test and Marascuillo's Procedure
+- Chi-Square Test and Marascuillo's Procedure
 
-Both methods have advantages depending on your particular use case. This document describes the algorithms in detail and highlights the advantages of each.
+Both methods are ultimately similar for two proportions, but the Z-Test Method tends to require a larger sample size. Since the Chi-Square/Marascuillo method controls for overall error rate, we recommend that you use that method if you have more than two variants.
 
 ## The Z-Test Method
 
@@ -24,7 +24,7 @@ Here is our Z-Testing algorithm:
 
 ## Chi-Square Test and Marascuillo's Procedure
 
-This method evaluates the variants in your A/B test using the [Chi Square Test and Marascuillo's Procedure](http://www.prenhall.com/behindthebook/0136149901/pdf/Levine_CH12.pdf). Because it controls for the familywise error rate, it is useful for A/B tests with more than two variants. 
+This method evaluates the variants in your A/B test using the [Chi Square Test and Marascuillo's Procedure](http://www.prenhall.com/behindthebook/0136149901/pdf/Levine_CH12.pdf). Because it controls for the familywise error rate, it is useful for A/B tests with any number of variants. 
 
 Here is a flow chart illustrating the algorithm used in this method:
 ![Chi-Square Test and Marascuillo's Procedure Flow Chart](http://sendwithus.github.io/confidence/docs/Marascuillo-FlowChart.png)
