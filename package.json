@@ -1,6 +1,6 @@
 {
   "name": "confidencejs",
-  "version": "1.1.4",
+  "version": "1.2.0",
   "description": "A light-weight JavaScript library to help you make sense of your A/B test results.",
   "keywords": [
     "a/b test",
