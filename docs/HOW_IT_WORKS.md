@@ -4,9 +4,10 @@
 - The Z-Test Method
 - Chi-Square Test and Marascuillo's Procedure
 
-Both methods are ultimately similar for two variants, but the Z-Test Method tends to require a larger sample size. Since the Chi-Square/Marascuillo method controls for overall error rate, we recommend that method is used for more than two variants.
+Both methods are ultimately similar for two variants, but the Z-Test Method tends to require a larger sample size. Since the Chi-Square/Marascuillo method controls for familywise error rate, we recommend that method is used for more than two variants.
 
 ## The Z-Test Method
+This method evaluates the variants in your A/B test using confidence intervals and p-values.
 
 Here is our Z-Testing algorithm:
 ```
@@ -24,7 +25,7 @@ Here is our Z-Testing algorithm:
 
 ## Chi-Square Test and Marascuillo's Procedure
 
-This method evaluates the variants in your A/B test using the [Chi Square Test and Marascuillo's Procedure](http://www.prenhall.com/behindthebook/0136149901/pdf/Levine_CH12.pdf). Because it controls for the familywise error rate, it is useful for A/B tests with any number of variants. 
+This method evaluates the variants in your A/B test using the [Chi Square Test and Marascuillo's Procedure](http://www.prenhall.com/behindthebook/0136149901/pdf/Levine_CH12.pdf).
 
 Here is a flow chart illustrating the algorithm used in this method:
 ![Chi-Square Test and Marascuillo's Procedure Flow Chart](http://sendwithus.github.io/confidence/docs/Marascuillo-FlowChart.png)
