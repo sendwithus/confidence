@@ -63,7 +63,7 @@ zTestResult = myConfidence.getResult();
 
 Confidence.js provides two methods for evaluating an A/B test:
 - The Z-Test Method
-- Chi Square Test and Marasciilo's Procedure
+- Chi Square Test and Marascuillo's Procedure
 
 Selecting an appropriate method depends on your data set and use case - both have advantages.
 
