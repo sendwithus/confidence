@@ -453,7 +453,7 @@ Confidence.prototype.getMarascuilloResult = function() {
   if (chiPartSum > critChi) {
     // there is a difference, proceed to marascuillo
     var bestVariant = this.getBestVariant();
-    result = this.marascuilo(bestVariant, critChi);
+    result = this.marascuillo(bestVariant, critChi);
   } else {
     // Enough data, no winner
     result = {
