@@ -53,7 +53,7 @@ zTestResult = myConfidence.getResult();
   confidencePercent: 95.00,
   confidenceInterval: { min: 82, max: 84.67 },
   readable: 'With 95% confidence, the true population
-    parameter of the "Var8iant A" variant will
+    parameter of the "Variant A" variant will
     fall between 82% and 84.67%.'
 }
 */
@@ -63,7 +63,7 @@ zTestResult = myConfidence.getResult();
 
 Confidence.js provides two methods for evaluating an A/B test:
 - The Z-Test Method
-- Chi Square Test and Marasciilo's Procedure
+- Chi Square Test and Marascuillo's Procedure
 
 Selecting an appropriate method depends on your data set and use case - both have advantages.
 

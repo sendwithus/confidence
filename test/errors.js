@@ -781,10 +781,10 @@ module.exports['zScore Probability'] = {
 };
 
 //**************************************************************************//
-// CHI-SQUARED AND MARASCUILO'S PROCEDURE
+// CHI-SQUARED AND MARASCUILLO'S PROCEDURE
 //**************************************************************************//
 
-module.exports['Get Marascuilo Result'] = {
+module.exports['Get Marascuillo Result'] = {
   'Not enough data (expected value < 5)': function(test) {
     var confidence = new Confidence();
 
@@ -802,7 +802,7 @@ module.exports['Get Marascuilo Result'] = {
       eventCount: 3
     });
 
-    var result = confidence.getMarascuiloResult();
+    var result = confidence.getMarascuilloResult();
 
     test.equal(result.hasWinner, false, 'There should not be a winner');
     test.equal(result.hasEnoughData, false, 'There should not be enough data');
@@ -829,7 +829,7 @@ module.exports['Get Marascuilo Result'] = {
       eventCount: 110
     });
 
-    var result = confidence.getMarascuiloResult();
+    var result = confidence.getMarascuilloResult();
 
     test.equal(result.hasWinner, false, 'There should not be a winner');
     test.equal(result.hasEnoughData, true, 'There should be enough data');
@@ -862,7 +862,7 @@ module.exports['Get Marascuilo Result'] = {
       eventCount: 100
     });
 
-    var result = confidence.getMarascuiloResult();
+    var result = confidence.getMarascuilloResult();
 
     test.equal(result.hasWinner, false, 'There should not be a winner');
     test.equal(result.hasEnoughData, true, 'There should be enough data');
@@ -895,7 +895,7 @@ module.exports['Get Marascuilo Result'] = {
       eventCount: 100
     });
 
-    var result = confidence.getMarascuiloResult();
+    var result = confidence.getMarascuilloResult();
 
     test.equal(result.hasWinner, true, 'There should be a winner');
     test.equal(result.hasEnoughData, true, 'There should be enough data');
@@ -1203,7 +1203,7 @@ module.exports['Get Best Variant'] = {
 
 //**************************************************************************//
 
-module.exports['Marascuilo'] = {
+module.exports['Marascuillo'] = {
   'There is a winner': function(test) {
     var confidence = new Confidence();
 
@@ -1230,7 +1230,7 @@ module.exports['Marascuilo'] = {
     var bestVariantID = 'B';
     var critChi = 5.9915;
 
-    var result = confidence.marascuilo(bestVariantID, critChi);
+    var result = confidence.marascuillo(bestVariantID, critChi);
     test.equal(result.hasWinner, true, 'There should be a winner');
     test.equal(result.hasEnoughData, true, 'There should be enough data');
     test.equal(result.winnerID, 'B', '\'B\' should be the winning variant ID');
@@ -1265,7 +1265,7 @@ module.exports['Marascuilo'] = {
     var bestVariantID = 'A';
     var critChi = 5.9915;
 
-    var result = confidence.marascuilo(bestVariantID, critChi);
+    var result = confidence.marascuillo(bestVariantID, critChi);
     test.equal(result.hasWinner, false, 'There should not be a winner');
     test.equal(result.hasEnoughData, true, 'There should be enough data');
     test.equal(result.winnerID, null, 'There should be no winner ID');
