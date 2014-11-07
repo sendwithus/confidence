@@ -1,0 +1,16 @@
+{
+  "name": "confidencejs",
+  "repository": "sendwithus/confidence",
+  "description": "A light-weight JavaScript library to help you make sense of your A/B test results.",
+  "version": "1.2.0",
+  "keywords": [
+    "a/b test",
+    "confidence",
+    "interval"
+  ],
+  "license": "Apache",
+  "main": "confidence.js",
+  "scripts": [
+    "confidence.js"
+  ]
+}
