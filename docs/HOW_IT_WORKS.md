@@ -25,7 +25,7 @@ Here is our Z-Testing algorithm:
 
 ## Chi-Square Test and Marascuillo's Procedure
 
-This method evaluates the variants in your A/B test using the [Chi Square Test and Marascuillo's Procedure](http://www.prenhall.com/behindthebook/0136149901/pdf/Levine_CH12.pdf).
+This method evaluates the variants in your A/B test using the Chi Square Test and Marascuillo's Procedure.
 
 Here is a flow chart illustrating the algorithm used in this method:
 ![Chi-Square Test and Marascuillo's Procedure Flow Chart](http://sendwithus.github.io/confidence/docs/Marascuillo-FlowChart.png)
